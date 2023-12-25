@@ -1,0 +1,10 @@
+{
+    "name": "Gamblers_Mod",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/The0therOne/Helmet_Cameras",
+    "description": "Test.",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100",
+        "2018-LC_API-3.0.2"
+    ]
+}
