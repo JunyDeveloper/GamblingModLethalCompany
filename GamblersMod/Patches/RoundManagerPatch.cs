@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameNetcodeStuff;
-using HarmonyLib;
+﻿using HarmonyLib;
 using UnityEngine;
 
 namespace GamblersMod.Patches
@@ -16,25 +8,13 @@ namespace GamblersMod.Patches
     {
         [HarmonyPatch("FinishGeneratingNewLevelClientRpc")]
         [HarmonyPrefix]
-        public static void FinishGeneratingNewLevelClientRpcPatch() {
-            var mls = BepInEx.Logging.Logger.CreateLogSource("StartOfRoundPatch");
-            mls.LogInfo("StartOfRoundPatch openingDoorsSequence StartOfRoundPatch StartOfRoundPatch");
-
-            GameObject instantiatedGamblingMachine = UnityEngine.Object.Instantiate(GamblersModBase.GamblingMachine, new Vector3(0, 0, 0), Quaternion.identity);
-            instantiatedGamblingMachine.layer = LayerMask.NameToLayer("InteractableObject");
-            // instantiatedGamblingMachine.tag = "InteractTrigger";
-            // instantiatedGamblingMachine.transform.tag = "InteractTrigger";
-            // instantiatedGamblingMachine.getCompoenent<C
-            Debug.Log($"Instantiated Tag: {instantiatedGamblingMachine.tag}");
-            // GamblersModBase.GamblingMachine.transform.position = ;
-        }
-
-        [HarmonyPatch("Start")]
-        [HarmonyPostfix]
-        public static void StartPatch()
+        public static void FinishGeneratingNewLevelClientRpcPatch()
         {
             var mls = BepInEx.Logging.Logger.CreateLogSource("StartOfRoundPatch");
-            mls.LogInfo("StartPatch StartPatch StartPatch StartOfRoundPatch");
+
+            GameObject instantiatedGamblingMachine = UnityEngine.Object.Instantiate(Plugin.GamblingMachine, new Vector3(-27.808f, -2.6256f, -9.7409f), Quaternion.Euler(0, 90, 0));
+            instantiatedGamblingMachine.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            instantiatedGamblingMachine.layer = LayerMask.NameToLayer("InteractableObject");
         }
     }
 }
