@@ -104,7 +104,7 @@ namespace GamblersMod.Patches
 
             //}
 
-           // Debug.Log(hitfound);
+           Debug.Log(hitfound);
 
             // Ignore raycast for these layers
            // if (!layersToIgnore.Contains(interactionRayHit.transform.gameObject.layer)) {
