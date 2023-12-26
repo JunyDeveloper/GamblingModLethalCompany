@@ -20,9 +20,8 @@ namespace GamblersMod.Patches
         }
 
         void Start() {
-           // tag = "InteractTrigger";
+          // tag = "InteractTrigger";
            // gameObject.layer = 8; // This layer enables tooltip for SetHoverTipAndCurrentInteractTrigger() (interactable?)
-            
         }
     }
 }

@@ -20,8 +20,13 @@ namespace GamblersMod.Patches
             var mls = BepInEx.Logging.Logger.CreateLogSource("StartOfRoundPatch");
             mls.LogInfo("StartOfRoundPatch openingDoorsSequence StartOfRoundPatch StartOfRoundPatch");
 
-            UnityEngine.Object.Instantiate(GamblersModBase.GamblingMachine, new Vector3(0, 0, 0), Quaternion.identity);
-           // GamblersModBase.GamblingMachine.transform.position = ;
+            GameObject instantiatedGamblingMachine = UnityEngine.Object.Instantiate(GamblersModBase.GamblingMachine, new Vector3(0, 0, 0), Quaternion.identity);
+            instantiatedGamblingMachine.layer = LayerMask.NameToLayer("InteractableObject");
+            // instantiatedGamblingMachine.tag = "InteractTrigger";
+            // instantiatedGamblingMachine.transform.tag = "InteractTrigger";
+            // instantiatedGamblingMachine.getCompoenent<C
+            Debug.Log($"Instantiated Tag: {instantiatedGamblingMachine.tag}");
+            // GamblersModBase.GamblingMachine.transform.position = ;
         }
 
         [HarmonyPatch("Start")]

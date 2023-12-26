@@ -48,13 +48,13 @@ namespace GamblersMod.Patches
         }
 
         public void ShowInteractionText() {
-            Debug.Log("Try to show");
+            //Debug.Log("Try to show");
             gamblingMachineInteractionTextCanvasObject.SetActive(true);
         }
 
         public void HideInteractionText()
         {
-            Debug.Log("Try to hide");
+            //Debug.Log("Try to hide");
             gamblingMachineInteractionTextCanvasObject.SetActive(false);
         }
     }

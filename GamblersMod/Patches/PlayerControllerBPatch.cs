@@ -23,7 +23,7 @@ namespace GamblersMod.Patches
 
         [HarmonyPatch("Awake")]
         [HarmonyPostfix]
-        static void Awake() {
+        static void AwakePatch() {
             var mls = BepInEx.Logging.Logger.CreateLogSource("PlayerControllerBPatch");
             mls.LogInfo("Test mod works");
             //  C:/Program Files (x86)/Steam/steamapps/common/Lethal Company/Lethal Company_Data/StreamingAssets
@@ -75,98 +75,85 @@ namespace GamblersMod.Patches
 
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
-        static void Update(ref Camera ___gameplayCamera) {
+        static void UpdatePatch(PlayerControllerB __instance) {
+            Camera gameplayCamera = __instance.gameplayCamera;
+           // if (!gameplayCamera) return;
             var mls = BepInEx.Logging.Logger.CreateLogSource("PlayerControllerB::UPDATE");
-           // mls.LogInfo($"Update START");
-
-            if (UnityInput.Current.GetKeyDown(KeyCode.F9)) { 
-                
-            }
 
             // If looking at snowman, log
-            Vector3 playerPosition = ___gameplayCamera.transform.position;
+            Vector3 playerPosition = gameplayCamera.transform.position;
             //mls.LogInfo($"playerPosition: ${playerPosition}");
-            Vector3 forwardDirection = ___gameplayCamera.transform.forward;
+            Vector3 forwardDirection = gameplayCamera.transform.forward;
             //mls.LogInfo($"forwardDirection: ${forwardDirection}");
 
             Ray interactionRay = new Ray(playerPosition, forwardDirection);
             //mls.LogInfo($"interactionRay: ${interactionRay}");
             RaycastHit interactionRayHit;
             float interactionRayLength = 5.0f;
+            
+          
+            int maskToCastRayOnlyFOrInteractableObjects = 1 << 9;
+            int layerMask5And3And18 = Convert.ToInt32("11111111111110111111111111010111", 2);
+            LayerMask[] layersToIgnore = { LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("UI"), LayerMask.NameToLayer("LineOfSight") };
+            bool hitfound = Physics.Raycast(interactionRay, out interactionRayHit, interactionRayLength, maskToCastRayOnlyFOrInteractableObjects);
 
-            Vector3 interactionRayEndpoint = forwardDirection * interactionRayLength;
-            //Debug.DrawLine(playerPosition, interactionRayEndpoint);
+            // 
 
-            bool hitfound = Physics.Raycast(interactionRay, out interactionRayHit, interactionRayLength);
-            Debug.Log($"Hitfound: ${hitfound}");
-            // 1) Add tags so random UI collissions wont happen
-            if (hitfound && interactionRayHit.transform.gameObject.name == "GamblingMachine")
-            {
-                GameObject hitGameObject = interactionRayHit.transform.gameObject;
-                if (!hitGameObject.name.Contains("Player"))
-                {
-                    Debug.Log(hitGameObject.name);
-                    if (hitGameObject.name == "GamblingMachine" && !isGamblingInteractionTextShowing)
+            // If the raycast hit air, then...
+            //if () { 
+
+            //}
+
+           // Debug.Log(hitfound);
+
+            // Ignore raycast for these layers
+           // if (!layersToIgnore.Contains(interactionRayHit.transform.gameObject.layer)) {
+           //     Debug.Log($"HIT RELEVANT LAYER: ${interactionRayHit.transform.gameObject.layer}");
+           // }
+
+
+            
+           if (interactionRayHit.collider) {
+                GameObject gameObjectHitByRayCast = interactionRayHit.transform.gameObject;
+                Collider gameObjectColliderHitByRayCast = interactionRayHit.collider;
+
+                // Debug.Log($"{gameObjectHitByRayCast.layer} == {LayerMask.NameToLayer("Player")}");
+                // These layers are eating up the ray hits
+
+
+                // Ignore ray cast hits
+                //if (!layersToIgnore.Contains(gameObjectHitByRayCast.layer))
+               // {
+                    if (hitfound && gameObjectColliderHitByRayCast)
                     {
-                        gamblingUtility.ShowInteractionText();
-                        isGamblingInteractionTextShowing = true;
-                        /*
-                        GameObject gamblingMachineInteractionTextCanvasObject = new GameObject();
-                        gamblingMachineInteractionTextCanvasObject.name = "gamblingMachineInteractionTextCanvasObject";
-                        gamblingMachineInteractionTextCanvasObject.AddComponent<Canvas>();
-
-                        Canvas gamblingMachineInteractionTextCanvas;
-                        gamblingMachineInteractionTextCanvas = gamblingMachineInteractionTextCanvasObject.GetComponent<Canvas>();
-                        gamblingMachineInteractionTextCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-                        gamblingMachineInteractionTextCanvasObject.AddComponent<CanvasScaler>();
-                        gamblingMachineInteractionTextCanvasObject.AddComponent<GraphicRaycaster>();
-
-                        GameObject gamblingMachineInteractionTextObject = new GameObject();
-                        gamblingMachineInteractionTextObject.name = "gamblingMachineInteractionTextObject";
-                        gamblingMachineInteractionTextObject.AddComponent<Text>();
-                        gamblingMachineInteractionTextObject.transform.localPosition = new Vector3(gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.width / 2, gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.height / 2, 0);
-
-                        Debug.Log(gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.width / 2);
-                        Debug.Log(gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.height / 2);
-
-                        Text gamblingMachineInteractionText;
-                        gamblingMachineInteractionText = gamblingMachineInteractionTextObject.GetComponent<Text>();
-                        gamblingMachineInteractionText.text = "Press E to win";
-                        gamblingMachineInteractionText.alignment = TextAnchor.MiddleCenter;
-                        gamblingMachineInteractionText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-
-                        gamblingMachineInteractionText.transform.parent = gamblingMachineInteractionTextCanvasObject.transform;
-
-                        UnityEngine.Object.Instantiate(gamblingMachineInteractionTextCanvasObject);
-                        */
+                        if (gameObjectHitByRayCast.name == "GamblingMachine" && !isGamblingInteractionTextShowing)
+                        {
+                            Debug.Log("HIT GAMBLING MACHINE");
+                            gamblingUtility.ShowInteractionText();
+                            isGamblingInteractionTextShowing = true;
+                        }
+                        else if (gameObjectHitByRayCast.name != "GamblingMachine" || !gameObjectColliderHitByRayCast)
+                        {
+                            Debug.Log("DID NOT HIT GAMBLING MACHINE");
+                            gamblingUtility.HideInteractionText();
+                            isGamblingInteractionTextShowing = false;
+                        }
                     }
-                    else if (hitGameObject.name != "GamblingMachine")
+                    else
                     {
+                        Debug.Log("NO HITS");
                         gamblingUtility.HideInteractionText();
                         isGamblingInteractionTextShowing = false;
                     }
-                }
+               // }
             }
-            else {
-                gamblingUtility.HideInteractionText();
-                isGamblingInteractionTextShowing = false;
+            else
+            {
+               Debug.Log($"AIR HITS: {interactionRayHit.collider}");
+               gamblingUtility.HideInteractionText();
+               isGamblingInteractionTextShowing = false;
             }
-
-
-            // if(Physics.Raycast())
+            
         }
-        /**
-         * 
-          [HarmonyPatch(typeof(JesterAI), "Start")]
-        [HarmonyPostfix]
-        private static void Postfix(JesterAI __instance)
-        {
-            screamingSFX = BundleLoader.GetLoadedAsset<AudioClip>("Assets/assetbundle/Audio/MyWay.wav");
-            __instance.screamingSFX = BundleLoader.GetLoadedAsset<AudioClip>("Assets/assetbundle/Audio/MyWay.wav");
-        }
-         
-         
-         */
-
     }
 }
