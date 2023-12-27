@@ -59,7 +59,7 @@ namespace GamblersMod.Patches
                     }
                     else
                     {
-                        gamblingUtility.SetInteractionSubText("");
+                        gamblingUtility.SetInteractionSubText("Please hold a scrap on your hand");
                     }
                 }
 

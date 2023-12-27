@@ -26,6 +26,13 @@ namespace GamblersMod
         public static AudioClip GamblingTripleScrapAudio;
         public static AudioClip GamblingDrumrollScrapAudio;
         public static GameObject GamblingATMMachine;
+        public static AudioClip GamblingMachineMusicAudio;
+        public static GameObject GamblingMachineResultCanvas;
+        // public static GameObject GamblingJackpotText;
+        //public static GameObject GamblingTripleText;
+        // public static GameObject GamblingDoubleText;
+        // public static GameObject GamblingHalveText;
+        //  public static GameObject GamblingRemoveText;
 
         public static ManualLogSource mls;
 
@@ -42,7 +49,7 @@ namespace GamblersMod
 
             mls.LogInfo($"Loading gamber bundle assets");
             // example/path/testbundle
-            AssetBundle gamblersBundle = AssetBundle.LoadFromFile(Path.Combine(DLLDirectoryName, "loop"));
+            AssetBundle gamblersBundle = AssetBundle.LoadFromFile(Path.Combine(DLLDirectoryName, "gamblingmachinebundle"));
 
             if (!gamblersBundle)
             {
@@ -53,23 +60,24 @@ namespace GamblersMod
                 mls.LogInfo("Gamblers bundle assets successfully loaded");
             }
 
-            //GamblingATMMachine = gamblersBundle.LoadAsset<GameObject>("ATM_Beige");
-            //GamblingDrumrollScrapAudio = gamblersBundle.LoadAsset<AudioClip>("drumroll");
-            //GamblingDoubleScrapAudio = gamblersBundle.LoadAsset<AudioClip>("coindrop");
-            //GamblingTripleScrapAudio = gamblersBundle.LoadAsset<AudioClip>("kaching");
-            //GamblingJackpotScrapAudio = gamblersBundle.LoadAsset<AudioClip>("holyshit");
-            //GamblingHalveScrapAudio = gamblersBundle.LoadAsset<AudioClip>("cricket");
-            //GamblingRemoveScrapAudio = gamblersBundle.LoadAsset<AudioClip>("womp");
-            //GameObject gamblingMachine = gamblersBundle.LoadAsset<GameObject>("Snowman_03 1"); // I guess even tho it's nested I dont need to specify folder structure
-
-
-            GamblingATMMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "ATM_Beige"); ;
             GamblingDrumrollScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "drumroll");
-            GamblingDoubleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "coindrop");
-            GamblingTripleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "kaching");
+            //GamblingDoubleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "coindrop");
+            //GamblingTripleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "kaching");
             GamblingJackpotScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "holyshit");
             GamblingHalveScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "cricket");
             GamblingRemoveScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "womp");
+            GamblingMachineMusicAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "machineMusic");
+            GamblingDoubleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "doublekill");
+            GamblingTripleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "triplekill");
+            GamblingMachineResultCanvas = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachineResultCanvas");
+
+            // GamblingJackpotText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "JackpotText");
+            // GamblingTripleText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "TripleText");
+            // GamblingDoubleText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "DoubleText");
+            // GamblingHalveText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "HalveText");
+            // GamblingRemoveText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "RemoveText");
+
+
             // GameObject gamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "Snowman_03 1"); ; // I guess even tho it's nested I dont need to specify folder structure
             GameObject gamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachine");
             gamblingMachine.AddComponent<GamblingMachine>();
