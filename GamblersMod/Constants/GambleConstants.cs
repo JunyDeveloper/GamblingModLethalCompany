@@ -20,5 +20,7 @@
         // Used for host and client message communication for configuration
         public readonly static string ON_HOST_RECIEVES_CLIENT_CONFIG_REQUEST = "OnHostRecievesClientConfigRequest";
         public readonly static string ON_CLIENT_RECIEVES_HOST_CONFIG_REQUEST = "OnClientRecievesHostConfigRequest";
+
+        public enum GamblingOutcome { JACKPOT, TRIPLE, DOUBLE, HALVE, REMOVE, DEFAULT }
     }
 }

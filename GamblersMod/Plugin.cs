@@ -29,6 +29,7 @@ namespace GamblersMod
         public static GameObject GamblingATMMachine;
         public static AudioClip GamblingMachineMusicAudio;
         public static GameObject GamblingMachineResultCanvas;
+
         // public static GameObject GamblingJackpotText;
         //public static GameObject GamblingTripleText;
         // public static GameObject GamblingDoubleText;
@@ -74,31 +75,18 @@ namespace GamblersMod
             GamblingMachineMusicAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "machineMusic");
             GamblingDoubleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "doublekill");
             GamblingTripleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "triplekill");
-            GamblingMachineResultCanvas = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachineResultCanvas");
+            GamblingMachineResultCanvas = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachineResultCanvas"); // ?
+            GamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachine");
+
+            // Attach the gambling machine script to the gambling machine game object
+            GamblingMachine.AddComponent<GamblingMachine>();
 
             // GamblingJackpotText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "JackpotText");
             // GamblingTripleText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "TripleText");
             // GamblingDoubleText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "DoubleText");
             // GamblingHalveText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "HalveText");
             // GamblingRemoveText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "RemoveText");
-
-
             // GameObject gamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "Snowman_03 1"); ; // I guess even tho it's nested I dont need to specify folder structure
-            GameObject gamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachine");
-            if (!gamblingMachine)
-            {
-                mls.LogError("Unable to load gambling machine prefab");
-            }
-            else
-            {
-                mls.LogInfo("Gambling machine prefab successfully loaded");
-            }
-
-            gamblingMachine.AddComponent<GamblingMachine>();
-
-
-
-            GamblingMachine = gamblingMachine;
 
             harmony.PatchAll(typeof(Plugin));
             harmony.PatchAll(typeof(PlayerControllerBPatch));

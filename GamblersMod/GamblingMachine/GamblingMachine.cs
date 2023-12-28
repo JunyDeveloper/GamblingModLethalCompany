@@ -1,14 +1,13 @@
 ﻿using System.Collections;
 using GameNetcodeStuff;
 using UnityEngine;
-using UnityEngine.UI;
+using static GamblersMod.config.GambleConstants;
 
 namespace GamblersMod.Patches
 {
-    internal class GamblingUtility : MonoBehaviour
+    internal class GamblingMachine : MonoBehaviour
     {
-        public enum GamblingOutcome { JACKPOT, TRIPLE, DOUBLE, HALVE, REMOVE, DEFAULT }
-
+        // Cooldown
         int gamblingMachineMaxCooldown;
         public int gamblingMachineCurrentCooldown;
 
@@ -30,32 +29,19 @@ namespace GamblersMod.Patches
         int rollMinValue;
         int rollMaxValue;
 
+        // Current state
         public float currentGamblingOutcomeMultiplier;
         public GamblingOutcome currentGamblingOutcome;
 
-        // UI Utility
-        GameObject gamblingMachineInteractionTextCanvasObject;
-        Canvas gamblingMachineInteractionTextCanvas;
-        GameObject gamblingMachineInteractionTextObject;
-        GameObject gamblingMachineInteractionScrapInfoTextObject;
-        Text gamblingMachineInteractionScrapInfoText;
-        Text gamblingMachineInteractionText;
-        private static GamblingUtility Instance;
-
-        string interactionName;
-        string interactionText;
+        PlayerGamblingUIManager GamblingMachineUIHelper;
 
         void Awake()
         {
-            Plugin.mls.LogInfo($"Gambling utility has awoken");
+            Plugin.mls.LogInfo("GamblingMachine has Awoken");
 
-            DontDestroyOnLoad(gameObject);
-        }
+            // UI Manipulation by the gambling machine
+            GamblingMachineUIHelper = gameObject.AddComponent<PlayerGamblingUIManager>();
 
-        public GamblingUtility()
-        {
-            Plugin.mls.LogInfo("GamblingUtility constructor");
-            // Gambling rolling state
             jackpotMultiplier = Plugin.UserConfig.configJackpotMultiplier;
             tripleMultiplier = Plugin.UserConfig.configTripleMultiplier;
             doubleMultiplier = Plugin.UserConfig.configDoubleMultiplier;
@@ -80,63 +66,22 @@ namespace GamblersMod.Patches
             Plugin.mls.LogInfo($"halvedPercentage loaded from config: {halvedPercentage}");
             Plugin.mls.LogInfo($"removedPercentage loaded from config: {removedPercentage}");
 
+            // Rolls
             rollMinValue = 1;
             rollMaxValue = jackpotPercentage + triplePercentage + doublePercentage + halvedPercentage + removedPercentage;
 
+            // Default current state
             currentGamblingOutcomeMultiplier = 1;
             currentGamblingOutcome = GamblingOutcome.DEFAULT;
 
             // Gambling cooldown
             gamblingMachineMaxCooldown = 4;
             gamblingMachineCurrentCooldown = 0;
+        }
 
-            // Gambling Interaction GUI
-            gamblingMachineInteractionTextCanvasObject = new GameObject();
-
-            interactionName = "gamblingMachine";
-            interactionText = "Press E to gamble";
-
-            gamblingMachineInteractionTextCanvasObject.name = $"{interactionName}InteractionTextCanvasObject";
-            gamblingMachineInteractionTextCanvasObject.AddComponent<Canvas>();
-            gamblingMachineInteractionTextCanvasObject.SetActive(false);
-
-            gamblingMachineInteractionTextCanvas = gamblingMachineInteractionTextCanvasObject.GetComponent<Canvas>();
-            gamblingMachineInteractionTextCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            gamblingMachineInteractionTextCanvasObject.AddComponent<CanvasScaler>();
-            gamblingMachineInteractionTextCanvasObject.AddComponent<GraphicRaycaster>();
-
-            // Title
-            gamblingMachineInteractionTextObject = new GameObject();
-            gamblingMachineInteractionTextObject.name = $"{interactionName}InteractionTextObject";
-            gamblingMachineInteractionTextObject.AddComponent<Text>();
-            gamblingMachineInteractionTextObject.transform.localPosition = new Vector3((gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.width / 2) - 20, (gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.height / 2) - 50, 0);
-
-            gamblingMachineInteractionText = gamblingMachineInteractionTextObject.GetComponent<Text>();
-            gamblingMachineInteractionText.text = interactionText;
-            gamblingMachineInteractionText.alignment = TextAnchor.MiddleCenter;
-            gamblingMachineInteractionText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            gamblingMachineInteractionText.rectTransform.sizeDelta = new Vector2(300, 200);
-            gamblingMachineInteractionText.fontSize = 26;
-
-            gamblingMachineInteractionText.transform.parent = gamblingMachineInteractionTextCanvasObject.transform;
-
-            // Subtitle
-            gamblingMachineInteractionScrapInfoTextObject = new GameObject();
-            gamblingMachineInteractionScrapInfoTextObject.name = $"{interactionName}InteractionScrapInfoTextObject";
-            gamblingMachineInteractionScrapInfoTextObject.AddComponent<Text>();
-            gamblingMachineInteractionScrapInfoTextObject.transform.localPosition = new Vector3((gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.width / 2) - 20, (gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.height / 2) - 100, 0);
-
-            gamblingMachineInteractionScrapInfoText = gamblingMachineInteractionScrapInfoTextObject.GetComponent<Text>();
-            gamblingMachineInteractionScrapInfoText.text = interactionText;
-            gamblingMachineInteractionScrapInfoText.alignment = TextAnchor.MiddleCenter;
-            gamblingMachineInteractionScrapInfoText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            gamblingMachineInteractionScrapInfoText.rectTransform.sizeDelta = new Vector2(300, 200);
-            gamblingMachineInteractionScrapInfoText.fontSize = 15;
-            gamblingMachineInteractionScrapInfoText.color = Color.green;
-
-            gamblingMachineInteractionScrapInfoText.transform.parent = gamblingMachineInteractionTextCanvasObject.transform;
-
-            UnityEngine.Object.Instantiate(gamblingMachineInteractionTextCanvasObject);
+        void Start()
+        {
+            Plugin.mls.LogInfo("GamblingMachine has Started");
         }
 
         public void GenerateGamblingOutcome()
@@ -233,27 +178,6 @@ namespace GamblersMod.Patches
                 //Object.Destroy(currentlyHeldObjectInHand); // can destroy on network
             }
         }
-
-        public void SetInteractionText(string text)
-        {
-            gamblingMachineInteractionText.text = text;
-        }
-
-        public void SetInteractionSubText(string text)
-        {
-            gamblingMachineInteractionScrapInfoText.text = text;
-        }
-
-        public void ShowInteractionText()
-        {
-            gamblingMachineInteractionTextCanvasObject.SetActive(true);
-        }
-
-        public void HideInteractionText()
-        {
-            gamblingMachineInteractionTextCanvasObject.SetActive(false);
-        }
-
         public void BeginGamblingMachineCooldown()
         {
             gamblingMachineCurrentCooldown = gamblingMachineMaxCooldown;
@@ -263,7 +187,7 @@ namespace GamblersMod.Patches
         public void EndGamblingMachineCooldown()
         {
             Plugin.mls.LogMessage("End gambling machine cooldown");
-            SetInteractionText("Press E to gamble");
+            GamblingMachineUIHelper.SetInteractionText("Press E to gamble");
         }
 
         public bool isInCooldownPhase()
@@ -276,7 +200,7 @@ namespace GamblersMod.Patches
             Plugin.mls.LogMessage("Start gambling machine cooldown");
             while (gamblingMachineCurrentCooldown > 0)
             {
-                SetInteractionText($"Cooling down... {gamblingMachineCurrentCooldown}");
+                GamblingMachineUIHelper.SetInteractionText($"Cooling down... {gamblingMachineCurrentCooldown}");
                 yield return new WaitForSeconds(1);
                 gamblingMachineCurrentCooldown -= 1;
                 Plugin.mls.LogMessage($"Gambling machine cooldown: {gamblingMachineCurrentCooldown}");

@@ -102,12 +102,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="config\GambleConfigNetworkHelper.cs" />
-    <Compile Include="config\GambleConstants.cs" />
+    <Compile Include="Constants\GambleConstants.cs" />
     <Compile Include="config\GambleConfigSettingsSerializable.cs" />
     <Compile Include="config\SerializerHelper.cs" />
+    <Compile Include="Player\PlayerGamblingUIManager.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Patches\GamblingMachine.cs" />
-    <Compile Include="Patches\GamblingUtility.cs" />
+    <Compile Include="GamblingMachine\GamblingMachine.cs" />
     <Compile Include="Patches\PlayerControllerBPatch.cs" />
     <Compile Include="Patches\RoundManagerPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
