@@ -32,7 +32,6 @@ C:\Users\JohnP\source\repos\GamblersMod\GamblersMod\bin\Debug\UnityEngine.VideoM
 C:\Users\JohnP\source\repos\GamblersMod\GamblersMod\bin\Debug\UnityEngine.Physics2DModule.dll
 C:\Users\JohnP\source\repos\GamblersMod\GamblersMod\bin\Debug\UnityEngine.TilemapModule.dll
 C:\Users\JohnP\source\repos\GamblersMod\GamblersMod\bin\Debug\Unity.AI.Navigation.dll
-C:\Users\JohnP\source\repos\GamblersMod\GamblersMod\bin\Debug\Unity.Collections.dll
 C:\Users\JohnP\source\repos\GamblersMod\GamblersMod\bin\Debug\ClientNetworkTransform.dll
 C:\Users\JohnP\source\repos\GamblersMod\GamblersMod\bin\Debug\UnityEngine.InputLegacyModule.dll
 C:\Users\JohnP\source\repos\GamblersMod\GamblersMod\bin\Debug\UnityEngine.IMGUIModule.dll

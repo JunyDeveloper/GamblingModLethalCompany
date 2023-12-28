@@ -1,6 +1,9 @@
-﻿using GameNetcodeStuff;
+﻿using GamblersMod.config;
+using GameNetcodeStuff;
 using HarmonyLib;
+using Unity.Netcode;
 using UnityEngine;
+using static GamblersMod.config.GambleConstants;
 
 namespace GamblersMod.Patches
 {
@@ -95,6 +98,25 @@ namespace GamblersMod.Patches
             AudioSource.PlayClipAtPoint(Plugin.GamblingDrumrollScrapAudio, __instance.transform.position, 0.6f);
             gamblingUtility.BeginGamblingMachineCooldown();
             gamblingUtility.StartDrumRollPhase(__instance, currentlyHeldObjectInHand);
+        }
+
+        [HarmonyPatch(typeof(PlayerControllerB), "ConnectClientToPlayerObject")]
+        [HarmonyPostfix]
+        public static void ConnectClientToPlayerObjectPatch()
+        {
+            Plugin.mls.LogInfo($"ConnectClientToPlayerObjectPatch");
+
+            // Register callback for host when client connects
+            if (NetworkManager.Singleton.IsHost)
+            {
+                Plugin.mls.LogInfo($"Registering host config message handler: {Plugin.modGUID}_{ON_HOST_RECIEVES_CLIENT_CONFIG_REQUEST}");
+                NetworkManager.Singleton.CustomMessagingManager.RegisterNamedMessageHandler($"{Plugin.modGUID}_{ON_HOST_RECIEVES_CLIENT_CONFIG_REQUEST}", GambleConfigNetworkHelper.OnHostRecievesClientConfigRequest);
+                return;
+            }
+
+            // Client connected, so they need to request the configuration file from the host
+            NetworkManager.Singleton.CustomMessagingManager.RegisterNamedMessageHandler($"{Plugin.modGUID}_{ON_CLIENT_RECIEVES_HOST_CONFIG_REQUEST}", GambleConfigNetworkHelper.OnClientRecievesHostConfigRequest);
+            GambleConfigNetworkHelper.StartClientRequestConfigFromHost();
         }
     }
 }

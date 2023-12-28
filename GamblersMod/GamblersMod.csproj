@@ -51,6 +51,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Unity.InputSystem, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.InputSystem.dll</HintPath>
@@ -100,6 +101,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="config\GambleConfigNetworkHelper.cs" />
+    <Compile Include="config\GambleConstants.cs" />
+    <Compile Include="config\GambleConfigSettingsSerializable.cs" />
+    <Compile Include="config\SerializerHelper.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Patches\GamblingMachine.cs" />
     <Compile Include="Patches\GamblingUtility.cs" />

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using BepInEx;
 using BepInEx.Logging;
+using GamblersMod.config;
 using GamblersMod.Patches;
 using HarmonyLib;
 using UnityEngine;
@@ -11,12 +12,12 @@ namespace GamblersMod
     public class Plugin : BaseUnityPlugin
     {
         public const string modGUID = "Junypai.GamblersMod";
-        private const string modName = "Gamblers Mod";
-        private const string modVersion = "1.0.0";
+        public const string modName = "Gamblers Mod";
+        public const string modVersion = "1.0.0";
 
         private readonly Harmony harmony = new Harmony(modGUID);
 
-        private static Plugin Instance;
+        public static Plugin Instance;
 
         public static GameObject GamblingMachine;
         public static AudioClip GamblingJackpotScrapAudio;
@@ -34,6 +35,8 @@ namespace GamblersMod
         // public static GameObject GamblingHalveText;
         //  public static GameObject GamblingRemoveText;
 
+        public static GambleConfigSettingsSerializable UserConfig;
+
         public static ManualLogSource mls;
 
         void Awake()
@@ -45,9 +48,11 @@ namespace GamblersMod
 
             mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
 
+            UserConfig = new GambleConfigSettingsSerializable(Config);
+
             var DLLDirectoryName = Path.GetDirectoryName(this.Info.Location);
 
-            mls.LogInfo($"Loading gamber bundle assets");
+            mls.LogInfo($"Loading gambler bundle assets");
             // example/path/testbundle
             AssetBundle gamblersBundle = AssetBundle.LoadFromFile(Path.Combine(DLLDirectoryName, "gamblingmachinebundle"));
 
@@ -80,16 +85,18 @@ namespace GamblersMod
 
             // GameObject gamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "Snowman_03 1"); ; // I guess even tho it's nested I dont need to specify folder structure
             GameObject gamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachine");
-            gamblingMachine.AddComponent<GamblingMachine>();
-
             if (!gamblingMachine)
             {
-                mls.LogInfo("Unable to load gambling machine prefab");
+                mls.LogError("Unable to load gambling machine prefab");
             }
             else
             {
                 mls.LogInfo("Gambling machine prefab successfully loaded");
             }
+
+            gamblingMachine.AddComponent<GamblingMachine>();
+
+
 
             GamblingMachine = gamblingMachine;
 

@@ -24,6 +24,7 @@ namespace GamblersMod.Patches
         int doublePercentage;
         int halvedPercentage;
         int removedPercentage;
+        int zeroMultiplier;
 
         // Dice roll range (inclusive)
         int rollMinValue;
@@ -46,29 +47,38 @@ namespace GamblersMod.Patches
 
         void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-
-            Plugin.mls.LogMessage($"Gambling utility has awoken");
+            Plugin.mls.LogInfo($"Gambling utility has awoken");
 
             DontDestroyOnLoad(gameObject);
         }
 
         public GamblingUtility()
         {
+            Plugin.mls.LogInfo("GamblingUtility constructor");
             // Gambling rolling state
-            jackpotMultiplier = 10;
-            tripleMultiplier = 3;
-            doubleMultiplier = 2;
-            halvedMultiplier = 0.5f;
+            jackpotMultiplier = Plugin.UserConfig.configJackpotMultiplier;
+            tripleMultiplier = Plugin.UserConfig.configTripleMultiplier;
+            doubleMultiplier = Plugin.UserConfig.configDoubleMultiplier;
+            halvedMultiplier = Plugin.UserConfig.configHalveMultiplier;
+            zeroMultiplier = Plugin.UserConfig.configZeroMultiplier;
 
-            jackpotPercentage = 3;
-            triplePercentage = 11;
-            doublePercentage = 27;
-            halvedPercentage = 47;
-            removedPercentage = 12;
+            jackpotPercentage = Plugin.UserConfig.configJackpotChance;
+            triplePercentage = Plugin.UserConfig.configTripleChance;
+            doublePercentage = Plugin.UserConfig.configDoubleChance;
+            halvedPercentage = Plugin.UserConfig.configHalveChance;
+            removedPercentage = Plugin.UserConfig.configZeroChance;
+
+            Plugin.mls.LogInfo($"jackpotMultiplier loaded from config: {jackpotMultiplier}");
+            Plugin.mls.LogInfo($"tripleMultiplier loaded from config: {tripleMultiplier}");
+            Plugin.mls.LogInfo($"doubleMultiplier loaded from config: {doubleMultiplier}");
+            Plugin.mls.LogInfo($"halvedMultiplier loaded from config: {halvedMultiplier}");
+            Plugin.mls.LogInfo($"zeroMultiplier loaded from config: {zeroMultiplier}");
+
+            Plugin.mls.LogInfo($"jackpotPercentage loaded from config: {jackpotPercentage}");
+            Plugin.mls.LogInfo($"triplePercentage loaded from config: {triplePercentage}");
+            Plugin.mls.LogInfo($"doublePercentage loaded from config: {doublePercentage}");
+            Plugin.mls.LogInfo($"halvedPercentage loaded from config: {halvedPercentage}");
+            Plugin.mls.LogInfo($"removedPercentage loaded from config: {removedPercentage}");
 
             rollMinValue = 1;
             rollMaxValue = jackpotPercentage + triplePercentage + doublePercentage + halvedPercentage + removedPercentage;
@@ -178,7 +188,7 @@ namespace GamblersMod.Patches
             else
             {
                 Plugin.mls.LogMessage($"Rolled Remove");
-                currentGamblingOutcomeMultiplier = 0;
+                currentGamblingOutcomeMultiplier = zeroMultiplier;
                 currentGamblingOutcome = GamblingOutcome.REMOVE;
             }
         }
