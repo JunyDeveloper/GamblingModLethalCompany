@@ -1,0 +1,9 @@
+{
+    "name": "GamblingMachineAtTheCompany",
+    "version_number": "1.0.2",
+    "website_url": "https://github.com/JunyDeveloper/GamblingModLethalCompany",
+    "description": "Adds a gambling machine to gamble your scraps at The Company moon. A great last ditch effort to not get ejected... or maybe you're just a gambling addict. Clients automatically sync with hosts gambling configuration when they join. Good luck!",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100"
+    ]
+}
