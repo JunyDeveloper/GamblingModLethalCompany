@@ -13,7 +13,6 @@ namespace GamblersMod.Player
 
         void Awake()
         {
-            // Attach script which will manange the gambling UI on the player
             PlayerGamblingUIManager = gameObject.AddComponent<PlayerGamblingUIManager>();
             PlayerControllerOriginal = gameObject.GetComponent<PlayerControllerB>();
         }
@@ -92,9 +91,7 @@ namespace GamblersMod.Player
         [ServerRpc(RequireOwnership = false)]
         void ActivateGamblingMachineServerRPC(NetworkBehaviourReference GambleMachineHitRef, NetworkBehaviourReference scrapBeingGambledRef, ServerRpcParams serverRpcParams = default)
         {
-            Plugin.mls.LogInfo("Is server: " + IsServer);
-            Plugin.mls.LogInfo("Is host: " + IsHost);
-            Plugin.mls.LogInfo("Is client: " + IsClient);
+            if (!IsServer) return;
 
             Plugin.mls.LogMessage("ActivateGamblingMachineServerRPC: Starting gambling machine cooldown phase in the server invoked by: " + serverRpcParams.Receive.SenderClientId);
 

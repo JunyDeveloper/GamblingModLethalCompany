@@ -12,7 +12,6 @@ namespace GamblersMod.Patches
         {
             Plugin.mls.LogInfo("Adding Gambling machine to network prefab");
             NetworkManager.Singleton.AddNetworkPrefab(Plugin.GamblingMachine);
-            //__instance.GetComponent<NetworkManager>().AddNetworkPrefab(Plugin.GamblingMachine);
         }
     }
 }

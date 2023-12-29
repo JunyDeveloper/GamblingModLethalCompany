@@ -107,7 +107,6 @@
     <Compile Include="Constants\GambleConstants.cs" />
     <Compile Include="config\GambleConfigSettingsSerializable.cs" />
     <Compile Include="config\SerializerHelper.cs" />
-    <Compile Include="NetworkHandler.cs" />
     <Compile Include="Patches\GameNetworkManagerPatch.cs" />
     <Compile Include="Player\PlayerControllerCustom.cs" />
     <Compile Include="Player\PlayerGamblingUIManager.cs" />

@@ -14,7 +14,6 @@ namespace GamblersMod.Patches
         {
             Plugin.mls.LogInfo("RoundManagerPatch has awoken");
             RoundManagerCustom = __instance.gameObject.AddComponent<RoundManagerCustom>();
-            Plugin.mls.LogInfo("RoundManagerCustom value is: " + RoundManagerCustom);
         }
 
         [HarmonyPatch("LoadNewLevelWait")]

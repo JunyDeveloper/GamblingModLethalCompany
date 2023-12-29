@@ -29,18 +29,8 @@ namespace GamblersMod.RoundManagerCustomSpace
             GamblingMachine.tag = "Untagged";
             GamblingMachine.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             GamblingMachine.layer = LayerMask.NameToLayer("InteractableObject");
-            GamblingMachine.AddComponent<AudioSource>();
-
-            AudioSource gamblingMachineAudioSource = GamblingMachine.GetComponent<AudioSource>();
-            gamblingMachineAudioSource.loop = true;
-            gamblingMachineAudioSource.clip = Plugin.GamblingMachineMusicAudio;
-            gamblingMachineAudioSource.volume = 0.4f;
-            gamblingMachineAudioSource.spatialBlend = 1f;
 
             GamblingMachine.GetComponent<NetworkObject>().Spawn();
-
-            gamblingMachineAudioSource.Play();
-
         }
     }
 }

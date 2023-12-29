@@ -31,12 +31,6 @@ namespace GamblersMod
         public static AudioClip GamblingMachineMusicAudio;
         public static GameObject GamblingMachineResultCanvas;
 
-        // public static GameObject GamblingJackpotText;
-        //public static GameObject GamblingTripleText;
-        // public static GameObject GamblingDoubleText;
-        // public static GameObject GamblingHalveText;
-        //  public static GameObject GamblingRemoveText;
-
         public static GambleConfigSettingsSerializable UserConfig;
 
         public static ManualLogSource mls;
@@ -70,8 +64,6 @@ namespace GamblersMod
             }
 
             GamblingDrumrollScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "drumroll");
-            //GamblingDoubleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "coindrop");
-            //GamblingTripleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "kaching");
             GamblingJackpotScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "holyshit");
             GamblingHalveScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "cricket");
             GamblingRemoveScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "womp");
@@ -83,15 +75,6 @@ namespace GamblersMod
 
             // Attach the gambling machine script to the gambling machine game object
             GamblingMachine.AddComponent<GamblingMachine>();
-
-
-
-            // GamblingJackpotText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "JackpotText");
-            // GamblingTripleText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "TripleText");
-            // GamblingDoubleText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "DoubleText");
-            // GamblingHalveText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "HalveText");
-            // GamblingRemoveText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "RemoveText");
-            // GameObject gamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "Snowman_03 1"); ; // I guess even tho it's nested I dont need to specify folder structure
 
             harmony.PatchAll(typeof(Plugin));
             harmony.PatchAll(typeof(GameNetworkManagerPatch));

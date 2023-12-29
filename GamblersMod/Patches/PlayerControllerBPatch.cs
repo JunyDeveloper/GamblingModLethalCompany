@@ -17,7 +17,6 @@ namespace GamblersMod.Patches
             __instance.gameObject.AddComponent<PlayerControllerCustom>();
         }
 
-
         [HarmonyPatch(typeof(PlayerControllerB), "ConnectClientToPlayerObject")]
         [HarmonyPostfix]
         public static void ConnectClientToPlayerObjectPatch()
