@@ -2,7 +2,7 @@
 
 ## 1.0.2
 
-- Update readme
+- Update readme format
 
 ## 1.0.1
 

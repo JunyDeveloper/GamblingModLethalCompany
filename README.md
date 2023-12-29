@@ -50,7 +50,7 @@ While holding a scrap, walk up to the machine and press "E" (your interaction ke
 
 ## Bugs
 
-This is my first **real** mod so there'll be bugs!
+This is first **real** mod so there'll be bugs!
 
 Please report any bugs here:
 https://github.com/JunyDeveloper/GamblingModLethalCompany/issues
