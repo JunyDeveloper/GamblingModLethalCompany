@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GamblersMod.Patches
 {
-    public class PlayerGamblingUIManager : MonoBehaviour
+    public class PlayerGamblingUIManager : NetworkBehaviour
     {
         // UI Utility
-        GameObject gamblingMachineInteractionTextCanvasObject;
+        GameObject gamblingMachineInteractionTextCanvasObject; // The parent for the entire canvas
         Canvas gamblingMachineInteractionTextCanvas;
         GameObject gamblingMachineInteractionTextObject;
         GameObject gamblingMachineInteractionScrapInfoTextObject;
@@ -16,10 +17,11 @@ namespace GamblersMod.Patches
         string interactionName;
         string interactionText;
 
-        public PlayerGamblingUIManager()
+        void Awake()
         {
             // Gambling Interaction GUI
             gamblingMachineInteractionTextCanvasObject = new GameObject();
+            gamblingMachineInteractionTextCanvasObject.transform.parent = transform;
 
             interactionName = "gamblingMachine";
             interactionText = "Press E to gamble";
@@ -63,9 +65,6 @@ namespace GamblersMod.Patches
             gamblingMachineInteractionScrapInfoText.color = Color.green;
 
             gamblingMachineInteractionScrapInfoText.transform.parent = gamblingMachineInteractionTextCanvasObject.transform;
-
-            // Render interaction text on player canvas
-            UnityEngine.Object.Instantiate(gamblingMachineInteractionTextCanvasObject);
         }
 
         public void SetInteractionText(string text)

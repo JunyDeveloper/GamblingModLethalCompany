@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using GameNetcodeStuff;
+﻿using System;
+using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using static GamblersMod.config.GambleConstants;
 
 namespace GamblersMod.Patches
 {
-    internal class GamblingMachine : MonoBehaviour
+    internal class GamblingMachine : NetworkBehaviour
     {
         // Cooldown
-        int gamblingMachineMaxCooldown;
-        public int gamblingMachineCurrentCooldown;
+        int gamblingMachineMaxCooldown = 4;
+        public int gamblingMachineCurrentCooldown = 0;
 
         // Multipliers for winning or losing
         int jackpotMultiplier;
@@ -28,19 +29,15 @@ namespace GamblersMod.Patches
         // Dice roll range (inclusive)
         int rollMinValue;
         int rollMaxValue;
+        int currentRoll = 1;
 
         // Current state
-        public float currentGamblingOutcomeMultiplier;
-        public GamblingOutcome currentGamblingOutcome;
-
-        PlayerGamblingUIManager GamblingMachineUIHelper;
+        public float currentGamblingOutcomeMultiplier = 1;
+        public string currentGamblingOutcome = GamblingOutcome.DEFAULT;
 
         void Awake()
         {
             Plugin.mls.LogInfo("GamblingMachine has Awoken");
-
-            // UI Manipulation by the gambling machine
-            GamblingMachineUIHelper = gameObject.AddComponent<PlayerGamblingUIManager>();
 
             jackpotMultiplier = Plugin.UserConfig.configJackpotMultiplier;
             tripleMultiplier = Plugin.UserConfig.configTripleMultiplier;
@@ -69,14 +66,6 @@ namespace GamblersMod.Patches
             // Rolls
             rollMinValue = 1;
             rollMaxValue = jackpotPercentage + triplePercentage + doublePercentage + halvedPercentage + removedPercentage;
-
-            // Default current state
-            currentGamblingOutcomeMultiplier = 1;
-            currentGamblingOutcome = GamblingOutcome.DEFAULT;
-
-            // Gambling cooldown
-            gamblingMachineMaxCooldown = 4;
-            gamblingMachineCurrentCooldown = 0;
         }
 
         void Start()
@@ -84,27 +73,21 @@ namespace GamblersMod.Patches
             Plugin.mls.LogInfo("GamblingMachine has Started");
         }
 
-        public void GenerateGamblingOutcome()
+        public void GenerateGamblingOutcomeFromCurrentRoll()
         {
-            int roll = Random.Range(rollMinValue, rollMaxValue);
-
-            Plugin.mls.LogMessage($"rollMinValue: {rollMinValue}");
-            Plugin.mls.LogMessage($"rollMaxValue: {rollMaxValue}");
-            Plugin.mls.LogMessage($"Roll value: {roll}");
-
-            bool isJackpotRoll = (roll >= rollMinValue && roll <= jackpotPercentage); // [0 - JACKPOT]
+            bool isJackpotRoll = (currentRoll >= rollMinValue && currentRoll <= jackpotPercentage); // [0 - JACKPOT]
 
             int tripleStart = jackpotPercentage;
             int tripleEnd = jackpotPercentage + triplePercentage;
-            bool isTripleRoll = (roll > tripleStart && roll <= tripleEnd); // [JACKPOT - (JACKPOT + TRIPLE)]
+            bool isTripleRoll = (currentRoll > tripleStart && currentRoll <= tripleEnd); // [JACKPOT - (JACKPOT + TRIPLE)]
 
             int doubleStart = tripleEnd;
             int doubleEnd = tripleEnd + doublePercentage;
-            bool isDoubleRoll = (roll > doubleStart && roll <= doubleEnd); // [(JACKPOT + TRIPLE) - (JACKPOT + TRIPLE + DOUBLE)]
+            bool isDoubleRoll = (currentRoll > doubleStart && currentRoll <= doubleEnd); // [(JACKPOT + TRIPLE) - (JACKPOT + TRIPLE + DOUBLE)]
 
             int halvedStart = doubleEnd;
             int halvedEnd = doubleEnd + halvedPercentage;
-            bool isHalvedRoll = (roll > halvedStart && roll <= halvedEnd); // [(JACKPOT + TRIPLE + DOUBLE) - (JACKPOT + TRIPLE + DOUBLE + HALVED)]
+            bool isHalvedRoll = (currentRoll > halvedStart && currentRoll <= halvedEnd); // [(JACKPOT + TRIPLE + DOUBLE) - (JACKPOT + TRIPLE + DOUBLE + HALVED)]
 
             if (isJackpotRoll)
             {
@@ -138,56 +121,39 @@ namespace GamblersMod.Patches
             }
         }
 
-        public void StartDrumRollPhase(PlayerControllerB __instance, GrabbableObject currentlyHeldObjectInHand)
+        public void PlayGambleResultAudio()
         {
-            StartCoroutine(StartGamblingMachineDrumRollPhaseCoroutine(__instance, currentlyHeldObjectInHand));
-        }
-
-        IEnumerator StartGamblingMachineDrumRollPhaseCoroutine(PlayerControllerB __instance, GrabbableObject currentlyHeldObjectInHand)
-        {
-            yield return new WaitForSeconds(gamblingMachineMaxCooldown);
-
-            GenerateGamblingOutcome();
-            int newScrapValue = (int)Mathf.Floor(currentlyHeldObjectInHand.scrapValue * currentGamblingOutcomeMultiplier);
-            currentlyHeldObjectInHand.SetScrapValue(newScrapValue);
-
             if (currentGamblingOutcome == GamblingOutcome.JACKPOT)
             {
-                Plugin.mls.LogMessage($"JACKPOT: ${currentlyHeldObjectInHand.scrapValue}");
-                AudioSource.PlayClipAtPoint(Plugin.GamblingJackpotScrapAudio, __instance.transform.position, 0.6f);
+                AudioSource.PlayClipAtPoint(Plugin.GamblingJackpotScrapAudio, transform.position, 0.6f);
             }
             else if (currentGamblingOutcome == GamblingOutcome.TRIPLE)
             {
-                Plugin.mls.LogMessage($"TRIPLE: ${currentlyHeldObjectInHand.scrapValue}");
-                AudioSource.PlayClipAtPoint(Plugin.GamblingTripleScrapAudio, __instance.transform.position, 0.6f);
+                AudioSource.PlayClipAtPoint(Plugin.GamblingTripleScrapAudio, transform.position, 0.6f);
             }
             else if (currentGamblingOutcome == GamblingOutcome.DOUBLE)
             {
-                Plugin.mls.LogMessage($"DOUBLE: ${currentlyHeldObjectInHand.scrapValue}");
-                AudioSource.PlayClipAtPoint(Plugin.GamblingDoubleScrapAudio, __instance.transform.position, 0.6f);
+                AudioSource.PlayClipAtPoint(Plugin.GamblingDoubleScrapAudio, transform.position, 0.6f);
             }
             else if (currentGamblingOutcome == GamblingOutcome.HALVE)
             {
-                Plugin.mls.LogMessage($"HALVE: ${currentlyHeldObjectInHand.scrapValue}");
-                AudioSource.PlayClipAtPoint(Plugin.GamblingHalveScrapAudio, __instance.transform.position, 0.6f);
+                AudioSource.PlayClipAtPoint(Plugin.GamblingHalveScrapAudio, transform.position, 0.6f);
             }
             else if (currentGamblingOutcome == GamblingOutcome.REMOVE)
             {
-                Plugin.mls.LogMessage($"REMOVE: ${currentlyHeldObjectInHand.scrapValue}");
-                AudioSource.PlayClipAtPoint(Plugin.GamblingRemoveScrapAudio, __instance.transform.position, 0.6f);
-                //Object.Destroy(currentlyHeldObjectInHand); // can destroy on network
+                AudioSource.PlayClipAtPoint(Plugin.GamblingRemoveScrapAudio, transform.position, 0.6f);
             }
         }
-        public void BeginGamblingMachineCooldown()
+
+        public void PlayDrumRoll()
         {
-            gamblingMachineCurrentCooldown = gamblingMachineMaxCooldown;
-            StartCoroutine(CountdownCooldownCoroutine());
+            AudioSource.PlayClipAtPoint(Plugin.GamblingDrumrollScrapAudio, transform.position, 0.6f);
         }
 
-        public void EndGamblingMachineCooldown()
+        public void BeginGamblingMachineCooldown(Action onCountdownFinish)
         {
-            Plugin.mls.LogMessage("End gambling machine cooldown");
-            GamblingMachineUIHelper.SetInteractionText("Press E to gamble");
+            gamblingMachineCurrentCooldown = gamblingMachineMaxCooldown;
+            StartCoroutine(CountdownCooldownCoroutine(onCountdownFinish));
         }
 
         public bool isInCooldownPhase()
@@ -195,17 +161,38 @@ namespace GamblersMod.Patches
             return gamblingMachineCurrentCooldown > 0;
         }
 
-        IEnumerator CountdownCooldownCoroutine()
+        IEnumerator CountdownCooldownCoroutine(Action onCountdownFinish)
         {
-            Plugin.mls.LogMessage("Start gambling machine cooldown");
+            Plugin.mls.LogInfo("Start gambling machine cooldown");
             while (gamblingMachineCurrentCooldown > 0)
             {
-                GamblingMachineUIHelper.SetInteractionText($"Cooling down... {gamblingMachineCurrentCooldown}");
                 yield return new WaitForSeconds(1);
                 gamblingMachineCurrentCooldown -= 1;
                 Plugin.mls.LogMessage($"Gambling machine cooldown: {gamblingMachineCurrentCooldown}");
             }
-            EndGamblingMachineCooldown();
+            onCountdownFinish();
+            Plugin.mls.LogMessage("End gambling machine cooldown");
+        }
+
+        public void SetRoll(int newRoll)
+        {
+            currentRoll = newRoll;
+        }
+
+        public int RollDice()
+        {
+            int roll = UnityEngine.Random.Range(rollMinValue, rollMaxValue);
+
+            Plugin.mls.LogMessage($"rollMinValue: {rollMinValue}");
+            Plugin.mls.LogMessage($"rollMaxValue: {rollMaxValue}");
+            Plugin.mls.LogMessage($"Roll value: {currentRoll}");
+
+            return roll;
+        }
+
+        public int GetScrapValueBasedOnGambledOutcome(GrabbableObject scrap)
+        {
+            return (int)Mathf.Floor(scrap.scrapValue * currentGamblingOutcomeMultiplier);
         }
     }
 }

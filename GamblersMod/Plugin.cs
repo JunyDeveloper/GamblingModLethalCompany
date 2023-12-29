@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using GamblersMod.config;
@@ -47,6 +48,8 @@ namespace GamblersMod
                 Instance = this;
             }
 
+            NetcodeWeaver();
+
             mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
 
             UserConfig = new GambleConfigSettingsSerializable(Config);
@@ -81,6 +84,8 @@ namespace GamblersMod
             // Attach the gambling machine script to the gambling machine game object
             GamblingMachine.AddComponent<GamblingMachine>();
 
+
+
             // GamblingJackpotText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "JackpotText");
             // GamblingTripleText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "TripleText");
             // GamblingDoubleText = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "DoubleText");
@@ -89,6 +94,7 @@ namespace GamblersMod
             // GameObject gamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "Snowman_03 1"); ; // I guess even tho it's nested I dont need to specify folder structure
 
             harmony.PatchAll(typeof(Plugin));
+            harmony.PatchAll(typeof(GameNetworkManagerPatch));
             harmony.PatchAll(typeof(PlayerControllerBPatch));
             harmony.PatchAll(typeof(RoundManagerPatch));
         }
@@ -108,8 +114,22 @@ namespace GamblersMod
 
             return loadedAsset;
         }
+
+        private static void NetcodeWeaver()
+        {
+            var types = Assembly.GetExecutingAssembly().GetTypes();
+            foreach (var type in types)
+            {
+                var methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                foreach (var method in methods)
+                {
+                    var attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
+                    if (attributes.Length > 0)
+                    {
+                        method.Invoke(null, null);
+                    }
+                }
+            }
+        }
     }
-
-
-
 }

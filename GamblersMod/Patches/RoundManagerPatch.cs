@@ -1,37 +1,42 @@
-﻿using HarmonyLib;
-using UnityEngine;
+﻿using GamblersMod.RoundManagerCustomSpace;
+using HarmonyLib;
 
 namespace GamblersMod.Patches
 {
     [HarmonyPatch(typeof(RoundManager))]
     internal class RoundManagerPatch
     {
-        [HarmonyPatch("FinishGeneratingNewLevelClientRpc")]
-        [HarmonyPrefix]
-        public static void FinishGeneratingNewLevelClientRpcPatch(RoundManager __instance)
+        public static RoundManagerCustom RoundManagerCustom;
+
+        [HarmonyPatch("Awake")]
+        [HarmonyPostfix]
+        public static void AwakePatch(RoundManager __instance)
         {
-            // Only spawn this at "The Company" moon
-            if (__instance.currentLevel.levelID == 3)
-            {
-                Plugin.mls.LogInfo($"Attemping to spawn gambling machine at {__instance.currentLevel.name}");
-                Vector3 gamblingMachineSpawnPoint = new Vector3(-27.808f, -2.6256f, -9.7409f);
-
-                GameObject instantiatedGamblingMachine = UnityEngine.Object.Instantiate(Plugin.GamblingMachine, gamblingMachineSpawnPoint, Quaternion.Euler(0, 90, 0));
-                instantiatedGamblingMachine.tag = "Untagged";
-                instantiatedGamblingMachine.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-                instantiatedGamblingMachine.layer = LayerMask.NameToLayer("InteractableObject");
-                instantiatedGamblingMachine.AddComponent<AudioSource>();
-
-                AudioSource gamblingMachineAudioSource = instantiatedGamblingMachine.GetComponent<AudioSource>();
-                gamblingMachineAudioSource.loop = true;
-                gamblingMachineAudioSource.clip = Plugin.GamblingMachineMusicAudio;
-                gamblingMachineAudioSource.volume = 0.4f;
-                gamblingMachineAudioSource.spatialBlend = 1f;
-
-                // instantiatedGamblingMachine.GetComponent<AudioSource>().dopplerLevel = 0f;
-                // instantiatedGamblingMachine.GetComponent<AudioSource>().rolloffMode = AudioRolloffMode.Linear;
-                gamblingMachineAudioSource.Play();
-            }
+            Plugin.mls.LogInfo("RoundManagerPatch has awoken");
+            RoundManagerCustom = __instance.gameObject.AddComponent<RoundManagerCustom>();
+            Plugin.mls.LogInfo("RoundManagerCustom value is: " + RoundManagerCustom);
         }
+
+        [HarmonyPatch("LoadNewLevelWait")]
+        [HarmonyPrefix]
+        public static void LoadNewLevelWaitPatch(RoundManager __instance)
+        {
+            Plugin.mls.LogInfo("FinishGeneratingNewLevelServerRpcPatch was called");
+            // Remove it every level so it can be re-created when landing on "The Company" again. Also don't want this spawning on other moons so remove it there too
+            if (__instance.currentLevel.levelID != 3 && RoundManagerCustom.GamblingMachine)
+            {
+                Plugin.mls.LogInfo("Despawning gambling machine...");
+                RoundManagerCustom.DespawnGamblingMachineServerRpc();
+            };
+
+            // Only spawn this at "The Company" moon
+            if (__instance.currentLevel.levelID == 3 && !RoundManagerCustom.GamblingMachine)
+            {
+                Plugin.mls.LogInfo("Spawning gambling machine...");
+                RoundManagerCustom.SpawnGamblingMachineServerRpc();
+            }
+
+        }
+
     }
 }

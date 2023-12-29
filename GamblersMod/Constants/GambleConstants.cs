@@ -21,6 +21,15 @@
         public readonly static string ON_HOST_RECIEVES_CLIENT_CONFIG_REQUEST = "OnHostRecievesClientConfigRequest";
         public readonly static string ON_CLIENT_RECIEVES_HOST_CONFIG_REQUEST = "OnClientRecievesHostConfigRequest";
 
-        public enum GamblingOutcome { JACKPOT, TRIPLE, DOUBLE, HALVE, REMOVE, DEFAULT }
+        //public enum GamblingOutcome { JACKPOT, TRIPLE, DOUBLE, HALVE, REMOVE, DEFAULT }
+        public struct GamblingOutcome
+        {
+            public static string JACKPOT = "JACKPOT";
+            public static string TRIPLE = "TRIPLE";
+            public static string DOUBLE = "DOUBLE";
+            public static string HALVE = "HALVE";
+            public static string REMOVE = "REMOVE";
+            public static string DEFAULT = "DEFAULT";
+        }
     }
 }

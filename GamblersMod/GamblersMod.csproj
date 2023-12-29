@@ -10,12 +10,14 @@
     <RootNamespace>GamblersMod</RootNamespace>
     <AssemblyName>GamblersMod</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>10.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -105,12 +107,16 @@
     <Compile Include="Constants\GambleConstants.cs" />
     <Compile Include="config\GambleConfigSettingsSerializable.cs" />
     <Compile Include="config\SerializerHelper.cs" />
+    <Compile Include="NetworkHandler.cs" />
+    <Compile Include="Patches\GameNetworkManagerPatch.cs" />
+    <Compile Include="Player\PlayerControllerCustom.cs" />
     <Compile Include="Player\PlayerGamblingUIManager.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="GamblingMachine\GamblingMachine.cs" />
     <Compile Include="Patches\PlayerControllerBPatch.cs" />
     <Compile Include="Patches\RoundManagerPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoundManagerCustom\RoundManagerCustom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">
