@@ -44,22 +44,22 @@ namespace GamblersMod.Patches
             Plugin.mls.LogInfo("GamblingMachine has Awoken");
 
             // Multipliers
-            jackpotMultiplier = Plugin.UserConfig.configJackpotMultiplier;
-            tripleMultiplier = Plugin.UserConfig.configTripleMultiplier;
-            doubleMultiplier = Plugin.UserConfig.configDoubleMultiplier;
-            halvedMultiplier = Plugin.UserConfig.configHalveMultiplier;
-            zeroMultiplier = Plugin.UserConfig.configZeroMultiplier;
+            jackpotMultiplier = Plugin.CurrentUserConfig.configJackpotMultiplier;
+            tripleMultiplier = Plugin.CurrentUserConfig.configTripleMultiplier;
+            doubleMultiplier = Plugin.CurrentUserConfig.configDoubleMultiplier;
+            halvedMultiplier = Plugin.CurrentUserConfig.configHalveMultiplier;
+            zeroMultiplier = Plugin.CurrentUserConfig.configZeroMultiplier;
 
             // Chance
-            jackpotPercentage = Plugin.UserConfig.configJackpotChance;
-            triplePercentage = Plugin.UserConfig.configTripleChance;
-            doublePercentage = Plugin.UserConfig.configDoubleChance;
-            halvedPercentage = Plugin.UserConfig.configHalveChance;
-            removedPercentage = Plugin.UserConfig.configZeroChance;
+            jackpotPercentage = Plugin.CurrentUserConfig.configJackpotChance;
+            triplePercentage = Plugin.CurrentUserConfig.configTripleChance;
+            doublePercentage = Plugin.CurrentUserConfig.configDoubleChance;
+            halvedPercentage = Plugin.CurrentUserConfig.configHalveChance;
+            removedPercentage = Plugin.CurrentUserConfig.configZeroChance;
 
             // Audio 
-            isMusicEnabled = Plugin.UserConfig.configGamblingMusicEnabled;
-            musicVolume = Plugin.UserConfig.configGamblingMusicVolume;
+            isMusicEnabled = Plugin.CurrentUserConfig.configGamblingMusicEnabled;
+            musicVolume = Plugin.CurrentUserConfig.configGamblingMusicVolume;
 
             Plugin.mls.LogInfo($"GamblingMachine: jackpotMultiplier loaded from config: {jackpotMultiplier}");
             Plugin.mls.LogInfo($"GamblingMachine: tripleMultiplier loaded from config: {tripleMultiplier}");

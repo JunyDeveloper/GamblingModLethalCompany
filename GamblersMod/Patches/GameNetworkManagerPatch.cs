@@ -13,5 +13,13 @@ namespace GamblersMod.Patches
             Plugin.mls.LogInfo("Adding Gambling machine to network prefab");
             NetworkManager.Singleton.AddNetworkPrefab(Plugin.GamblingMachine);
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameNetworkManager), "StartDisconnect")]
+        public static void StartDisconnectPatch()
+        {
+            Plugin.mls.LogInfo("Player disconnected. Resetting the user's configuration settings.");
+            Plugin.CurrentUserConfig = Plugin.UserConfigSnapshot; // Reset the user's configuration settings
+        }
     }
 }

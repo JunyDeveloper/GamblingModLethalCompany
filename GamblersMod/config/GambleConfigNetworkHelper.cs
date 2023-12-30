@@ -17,7 +17,7 @@ namespace GamblersMod.config
             Plugin.mls.LogInfo("Host recieved client config request.");
 
             Plugin.mls.LogInfo("Serializing host config data...");
-            byte[] serializedData = SerializerHelper.GetSerializedSettings(Plugin.UserConfig);
+            byte[] serializedData = SerializerHelper.GetSerializedSettings(Plugin.CurrentUserConfig);
 
             Plugin.mls.LogInfo("Start writing host config data...");
             FastBufferWriter writer = new FastBufferWriter(serializedData.Length + 4, Allocator.Temp); // + 4 for error checking, but why is this also needed in StartClientRequestConfigFromHost
@@ -72,25 +72,26 @@ namespace GamblersMod.config
             byte[] configByteData = new byte[configByteLength];
             reader.ReadBytesSafe(ref configByteData, configByteLength);
 
+            Plugin.RecentHostConfig = SerializerHelper.GetDeserializedSettings<GambleConfigSettingsSerializable>(configByteData);
+            Plugin.CurrentUserConfig = Plugin.RecentHostConfig; // Client configuration set to the host configuration!
 
-            GambleConfigSettingsSerializable newUserConfig = SerializerHelper.GetDeserializedSettings<GambleConfigSettingsSerializable>(configByteData);
-            newUserConfig.configGamblingMusicEnabled = Plugin.UserConfig.configGamblingMusicEnabled; // Keep this client sided
-            newUserConfig.configGamblingMusicVolume = Plugin.UserConfig.configGamblingMusicVolume; // Keep this client sided
-            Plugin.UserConfig = newUserConfig; // Client configuration set to the host configuration!
+            // Keep these fields client sided, so we revert to the user's original config settings
+            Plugin.CurrentUserConfig.configGamblingMusicEnabled = Plugin.UserConfigSnapshot.configGamblingMusicEnabled;
+            Plugin.CurrentUserConfig.configGamblingMusicVolume = Plugin.UserConfigSnapshot.configGamblingMusicVolume;
 
             var pluginLogger = Plugin.mls;
 
-            pluginLogger.LogInfo($"Jackpot chance value from config: {Plugin.UserConfig.configJackpotChance}");
-            pluginLogger.LogInfo($"Triple chance value from config: {Plugin.UserConfig.configTripleChance}");
-            pluginLogger.LogInfo($"Double chance value from config: {Plugin.UserConfig.configDoubleChance}");
-            pluginLogger.LogInfo($"Halve chance value from config: {Plugin.UserConfig.configHalveChance}");
-            pluginLogger.LogInfo($"Zero chance value from config: {Plugin.UserConfig.configZeroChance}");
+            pluginLogger.LogInfo($"Jackpot chance value from config: {Plugin.CurrentUserConfig.configJackpotChance}");
+            pluginLogger.LogInfo($"Triple chance value from config: {Plugin.CurrentUserConfig.configTripleChance}");
+            pluginLogger.LogInfo($"Double chance value from config: {Plugin.CurrentUserConfig.configDoubleChance}");
+            pluginLogger.LogInfo($"Halve chance value from config: {Plugin.CurrentUserConfig.configHalveChance}");
+            pluginLogger.LogInfo($"Zero chance value from config: {Plugin.CurrentUserConfig.configZeroChance}");
 
-            pluginLogger.LogInfo($"Jackpot multiplier value from config: {Plugin.UserConfig.configJackpotMultiplier}");
-            pluginLogger.LogInfo($"Triple multiplier value from config: {Plugin.UserConfig.configTripleMultiplier}");
-            pluginLogger.LogInfo($"Double multiplier value from config: {Plugin.UserConfig.configDoubleMultiplier}");
-            pluginLogger.LogInfo($"Halve multiplier value from config: {Plugin.UserConfig.configHalveMultiplier}");
-            pluginLogger.LogInfo($"Zero multiplier value from config: {Plugin.UserConfig.configZeroMultiplier}");
+            pluginLogger.LogInfo($"Jackpot multiplier value from config: {Plugin.CurrentUserConfig.configJackpotMultiplier}");
+            pluginLogger.LogInfo($"Triple multiplier value from config: {Plugin.CurrentUserConfig.configTripleMultiplier}");
+            pluginLogger.LogInfo($"Double multiplier value from config: {Plugin.CurrentUserConfig.configDoubleMultiplier}");
+            pluginLogger.LogInfo($"Halve multiplier value from config: {Plugin.CurrentUserConfig.configHalveMultiplier}");
+            pluginLogger.LogInfo($"Zero multiplier value from config: {Plugin.CurrentUserConfig.configZeroMultiplier}");
 
             Plugin.mls.LogInfo("Successfully synced a client with host configuration");
         }
