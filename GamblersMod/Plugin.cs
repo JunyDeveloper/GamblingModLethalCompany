@@ -31,7 +31,10 @@ namespace GamblersMod
         public static AudioClip GamblingMachineMusicAudio;
         public static GameObject GamblingMachineResultCanvas;
 
-        public static GambleConfigSettingsSerializable UserConfig;
+        // Configuration state
+        public static GambleConfigSettingsSerializable UserConfigSnapshot; // Snapshot of the user configuration set in their CFG file
+        public static GambleConfigSettingsSerializable RecentHostConfig; // This is the most recent host configuration that we pulled
+        public static GambleConfigSettingsSerializable CurrentUserConfig; // Current user config state
 
         public static ManualLogSource mls;
 
@@ -46,7 +49,7 @@ namespace GamblersMod
 
             mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
 
-            UserConfig = new GambleConfigSettingsSerializable(Config);
+            CurrentUserConfig = new GambleConfigSettingsSerializable(Config);
 
             var DLLDirectoryName = Path.GetDirectoryName(this.Info.Location);
 

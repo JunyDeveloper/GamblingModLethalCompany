@@ -26,6 +26,10 @@ namespace GamblersMod.Patches
         int removedPercentage;
         int zeroMultiplier;
 
+        // Audio
+        bool isMusicEnabled = true;
+        float musicVolume = 0.35f;
+
         // Dice roll range (inclusive)
         int rollMinValue;
         int rollMaxValue;
@@ -39,29 +43,40 @@ namespace GamblersMod.Patches
         {
             Plugin.mls.LogInfo("GamblingMachine has Awoken");
 
-            jackpotMultiplier = Plugin.UserConfig.configJackpotMultiplier;
-            tripleMultiplier = Plugin.UserConfig.configTripleMultiplier;
-            doubleMultiplier = Plugin.UserConfig.configDoubleMultiplier;
-            halvedMultiplier = Plugin.UserConfig.configHalveMultiplier;
-            zeroMultiplier = Plugin.UserConfig.configZeroMultiplier;
+            // Multipliers
+            jackpotMultiplier = Plugin.CurrentUserConfig.configJackpotMultiplier;
+            tripleMultiplier = Plugin.CurrentUserConfig.configTripleMultiplier;
+            doubleMultiplier = Plugin.CurrentUserConfig.configDoubleMultiplier;
+            halvedMultiplier = Plugin.CurrentUserConfig.configHalveMultiplier;
+            zeroMultiplier = Plugin.CurrentUserConfig.configZeroMultiplier;
 
-            jackpotPercentage = Plugin.UserConfig.configJackpotChance;
-            triplePercentage = Plugin.UserConfig.configTripleChance;
-            doublePercentage = Plugin.UserConfig.configDoubleChance;
-            halvedPercentage = Plugin.UserConfig.configHalveChance;
-            removedPercentage = Plugin.UserConfig.configZeroChance;
+            // Chance
+            jackpotPercentage = Plugin.CurrentUserConfig.configJackpotChance;
+            triplePercentage = Plugin.CurrentUserConfig.configTripleChance;
+            doublePercentage = Plugin.CurrentUserConfig.configDoubleChance;
+            halvedPercentage = Plugin.CurrentUserConfig.configHalveChance;
+            removedPercentage = Plugin.CurrentUserConfig.configZeroChance;
 
-            Plugin.mls.LogInfo($"jackpotMultiplier loaded from config: {jackpotMultiplier}");
-            Plugin.mls.LogInfo($"tripleMultiplier loaded from config: {tripleMultiplier}");
-            Plugin.mls.LogInfo($"doubleMultiplier loaded from config: {doubleMultiplier}");
-            Plugin.mls.LogInfo($"halvedMultiplier loaded from config: {halvedMultiplier}");
-            Plugin.mls.LogInfo($"zeroMultiplier loaded from config: {zeroMultiplier}");
+            // Audio 
+            isMusicEnabled = Plugin.CurrentUserConfig.configGamblingMusicEnabled;
+            musicVolume = Plugin.CurrentUserConfig.configGamblingMusicVolume;
 
-            Plugin.mls.LogInfo($"jackpotPercentage loaded from config: {jackpotPercentage}");
-            Plugin.mls.LogInfo($"triplePercentage loaded from config: {triplePercentage}");
-            Plugin.mls.LogInfo($"doublePercentage loaded from config: {doublePercentage}");
-            Plugin.mls.LogInfo($"halvedPercentage loaded from config: {halvedPercentage}");
-            Plugin.mls.LogInfo($"removedPercentage loaded from config: {removedPercentage}");
+            Plugin.mls.LogInfo($"GamblingMachine: jackpotMultiplier loaded from config: {jackpotMultiplier}");
+            Plugin.mls.LogInfo($"GamblingMachine: tripleMultiplier loaded from config: {tripleMultiplier}");
+            Plugin.mls.LogInfo($"GamblingMachine: doubleMultiplier loaded from config: {doubleMultiplier}");
+            Plugin.mls.LogInfo($"GamblingMachine: halvedMultiplier loaded from config: {halvedMultiplier}");
+            Plugin.mls.LogInfo($"GamblingMachine: zeroMultiplier loaded from config: {zeroMultiplier}");
+
+            Plugin.mls.LogInfo($"GamblingMachine: jackpotPercentage loaded from config: {jackpotPercentage}");
+            Plugin.mls.LogInfo($"GamblingMachine: triplePercentage loaded from config: {triplePercentage}");
+            Plugin.mls.LogInfo($"GamblingMachine: doublePercentage loaded from config: {doublePercentage}");
+            Plugin.mls.LogInfo($"GamblingMachine: halvedPercentage loaded from config: {halvedPercentage}");
+            Plugin.mls.LogInfo($"GamblingMachine: removedPercentage loaded from config: {removedPercentage}");
+
+            Plugin.mls.LogInfo($"GamblingMachine: gamblingMusicEnabled loaded from config: {isMusicEnabled}");
+            Plugin.mls.LogInfo($"GamblingMachine: gamblingMusicVolume loaded from config: {musicVolume}");
+
+            InitAudioSource();
 
             // Rolls
             rollMinValue = 1;
@@ -193,6 +208,17 @@ namespace GamblersMod.Patches
         public int GetScrapValueBasedOnGambledOutcome(GrabbableObject scrap)
         {
             return (int)Mathf.Floor(scrap.scrapValue * currentGamblingOutcomeMultiplier);
+        }
+
+        private void InitAudioSource()
+        {
+            // Music by default plays on awake
+            if (!isMusicEnabled)
+            {
+                GetComponent<AudioSource>().Pause();
+            }
+
+            GetComponent<AudioSource>().volume = musicVolume;
         }
     }
 }
