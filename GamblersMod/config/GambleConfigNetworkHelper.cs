@@ -93,6 +93,9 @@ namespace GamblersMod.config
             pluginLogger.LogInfo($"Halve multiplier value from config: {Plugin.CurrentUserConfig.configHalveMultiplier}");
             pluginLogger.LogInfo($"Zero multiplier value from config: {Plugin.CurrentUserConfig.configZeroMultiplier}");
 
+            pluginLogger.LogInfo($"Audio enabled from config: {Plugin.CurrentUserConfig.configGamblingMusicEnabled}");
+            pluginLogger.LogInfo($"Audio volume from config: {Plugin.CurrentUserConfig.configGamblingMusicVolume}");
+
             Plugin.mls.LogInfo("Successfully synced a client with host configuration");
         }
     }

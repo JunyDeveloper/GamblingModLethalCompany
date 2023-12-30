@@ -50,6 +50,8 @@ namespace GamblersMod
             mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
 
             CurrentUserConfig = new GambleConfigSettingsSerializable(Config);
+            RecentHostConfig = new GambleConfigSettingsSerializable(Config);
+            UserConfigSnapshot = new GambleConfigSettingsSerializable(Config);
 
             var DLLDirectoryName = Path.GetDirectoryName(this.Info.Location);
 
