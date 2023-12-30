@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.3
+
+- Configurable fields to enable music and to set music volume
+
 ## 1.0.2
 
 - Update readme format
