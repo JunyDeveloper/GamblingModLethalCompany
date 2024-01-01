@@ -67,7 +67,7 @@ namespace GamblersMod.Player
                     // Object in hand so show subtext
                     if (currentlyHeldObjectInHand)
                     {
-                        PlayerGamblingUIManager.SetInteractionSubText($"Scrap value on hand: ${currentlyHeldObjectInHand.scrapValue}");
+                        PlayerGamblingUIManager.SetInteractionSubText($"Scrap value on hand: ■{currentlyHeldObjectInHand.scrapValue}");
                     }
                     else
                     {
@@ -151,7 +151,7 @@ namespace GamblersMod.Player
                 return;
             }
 
-            Plugin.mls.LogMessage($"Scrap value of {currentlyHeldObjectInHand.name} on hand: ${currentlyHeldObjectInHand.scrapValue}");
+            Plugin.mls.LogMessage($"Scrap value of {currentlyHeldObjectInHand.name} on hand: ▊{currentlyHeldObjectInHand.scrapValue}");
             ActivateGamblingMachineServerRPC(GamblingMachineHit, currentlyHeldObjectInHand);
             PlayerGamblingUIManager.SetInteractionText($"Cooling down... {GamblingMachineHit.gamblingMachineCurrentCooldown}");
         }
