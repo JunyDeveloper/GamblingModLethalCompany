@@ -67,7 +67,7 @@ namespace GamblersMod.Player
                     // Object in hand so show subtext
                     if (currentlyHeldObjectInHand)
                     {
-                        PlayerGamblingUIManager.SetInteractionSubText($"Scrap value on hand: ${currentlyHeldObjectInHand.scrapValue}");
+                        PlayerGamblingUIManager.SetInteractionSubText($"Scrap value on hand: ■{currentlyHeldObjectInHand.scrapValue}");
                     }
                     else
                     {
