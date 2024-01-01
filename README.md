@@ -47,13 +47,23 @@ While holding a scrap, walk up to the machine and press "E" (your interaction ke
   - Double Multiplier
   - Halve Multiplier
   - Zero Multiplier
+- Audio (Client side)
+  - Enable machine music
+  - Machine music volume
+
+## Feature/Enhancement request
+Feature/Enhancement requests can be put here! https://github.com/JunyDeveloper/GamblingModLethalCompany/issues
+
+Click on the <span style="color:green">*Green*</span> button that says <span style="color:green">*"New Issue"*</span> and type in the details of your request!
 
 ## Bugs
 
-This is first **real** mod so there'll be bugs!
+This is my first **real** mod so there'll be bugs!
 
 Please report any bugs here:
 https://github.com/JunyDeveloper/GamblingModLethalCompany/issues
+
+Click on the <span style="color:green">*Green*</span> button that says <span style="color:green">*"New Issue"*</span> and type in the details of your bug!
 
 ## Support me for more mods :)
 
