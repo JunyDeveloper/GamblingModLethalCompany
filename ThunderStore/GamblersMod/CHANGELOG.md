@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.9
+- For the default configuration, increase double chance by 3% and decrease zero chance by 3%
+
 ## 1.0.8
 - Fix gambling machining activing multiple times in one interaction
 
