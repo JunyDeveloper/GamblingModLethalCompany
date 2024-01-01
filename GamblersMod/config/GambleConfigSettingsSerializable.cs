@@ -43,7 +43,7 @@ namespace GamblersMod.config
 
             // Audio
             configFile.Bind(GAMBLING_AUDIO_SECTION_KEY, CONFIG_GAMBLING_MUSIC_ENABLED, true, "Enable gambling machine music (CLIENT SIDE)");
-            configFile.Bind(GAMBLING_AUDIO_SECTION_KEY, CONFIG_GAMBLING_MUSIC_VOLUME, 0.35f, "Gambling machine music volume (CLIENT SIDE");
+            configFile.Bind(GAMBLING_AUDIO_SECTION_KEY, CONFIG_GAMBLING_MUSIC_VOLUME, 0.35f, "Gambling machine music volume (CLIENT SIDE)ssssssssssssss");
 
             configJackpotChance = GetConfigFileKeyValue<int>(configFile, GAMBLING_CHANCE_SECTION_KEY, CONFIG_JACKPOT_CHANCE_KEY);
             configTripleChance = GetConfigFileKeyValue<int>(configFile, GAMBLING_CHANCE_SECTION_KEY, CONFIG_TRIPLE_CHANCE_KEY);
