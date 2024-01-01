@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.1.0
+- Update readme
+
 ## 1.0.9
 - For the default configuration, increase double chance by 3% and decrease zero chance by 3%
 
