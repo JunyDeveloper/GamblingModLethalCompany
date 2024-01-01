@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.8
+- Fix gambling machining activing multiple times in one interaction
+
 ## 1.0.7
 - Fix interaction key showing up incorrectly
 
