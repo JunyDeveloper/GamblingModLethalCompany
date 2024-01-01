@@ -2,6 +2,7 @@
 using GameNetcodeStuff;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GamblersMod.Player
 {
@@ -59,7 +60,8 @@ namespace GamblersMod.Player
                     }
                     else
                     {
-                        PlayerGamblingUIManager.SetInteractionText("Press E to gamble");
+                        string interactKeyName = PlayerControllerOriginal.playerActions.FindAction("Interact").GetBindingDisplayString(0);
+                        PlayerGamblingUIManager.SetInteractionText($"Press {interactKeyName} to gamble");
                     }
 
                     // Object in hand so show subtext
