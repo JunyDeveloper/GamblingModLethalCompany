@@ -151,7 +151,7 @@ namespace GamblersMod.Player
                 return;
             }
 
-            Plugin.mls.LogMessage($"Scrap value of {currentlyHeldObjectInHand.name} on hand: ${currentlyHeldObjectInHand.scrapValue}");
+            Plugin.mls.LogMessage($"Scrap value of {currentlyHeldObjectInHand.name} on hand: ▊{currentlyHeldObjectInHand.scrapValue}");
             ActivateGamblingMachineServerRPC(GamblingMachineHit, currentlyHeldObjectInHand);
             PlayerGamblingUIManager.SetInteractionText($"Cooling down... {GamblingMachineHit.gamblingMachineCurrentCooldown}");
         }
