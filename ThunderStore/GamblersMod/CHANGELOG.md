@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.7
+- Fix interaction key showing up incorrectly
+
 ## 1.0.6
 
 - Changed scrap value currency dollar icon to match the ingame currency icon
