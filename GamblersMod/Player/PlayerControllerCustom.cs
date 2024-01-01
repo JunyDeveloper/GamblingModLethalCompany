@@ -60,7 +60,9 @@ namespace GamblersMod.Player
                     }
                     else
                     {
-                        string interactKeyName = PlayerControllerOriginal.playerActions.FindAction("Interact").GetBindingDisplayString(0);
+
+                        // string interactKeyName = PlayerControllerOriginal.playerActions.FindAction("Interact").GetBindingDisplayString(0);
+                        string interactKeyName = IngamePlayerSettings.Instance.playerInput.actions.FindAction("Interact").GetBindingDisplayString(0); ;
                         PlayerGamblingUIManager.SetInteractionText($"Press {interactKeyName} to gamble");
                     }
 
@@ -76,7 +78,8 @@ namespace GamblersMod.Player
                 }
 
                 // Handle gambling machine input
-                if (gameObjectHitByRayCast.name.Contains("GamblingMachine") && PlayerControllerOriginal.playerActions.FindAction("Interact").triggered)
+                // if (gameObjectHitByRayCast.name.Contains("GamblingMachine") && PlayerControllerOriginal.playerActions.FindAction("Interact").triggered)
+                if (gameObjectHitByRayCast.name.Contains("GamblingMachine") && IngamePlayerSettings.Instance.playerInput.actions.FindAction("Interact").IsPressed())
                 {
                     Plugin.mls.LogInfo($"Gambling machine was interacted with by: {PlayerControllerOriginal.playerUsername}");
                     GamblingMachine GamblingMachineHit = gameObjectHitByRayCast.GetComponent<GamblingMachine>();
