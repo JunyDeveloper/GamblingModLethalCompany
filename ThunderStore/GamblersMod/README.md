@@ -18,8 +18,8 @@ The default gambling chances (these are configurable):
 
 - Jackpot = 3%
 - Triple = 11%
-- Double = 30%
-- Halve = 47%
+- Double = 27%
+- Halve = 50%
 - Zero = 9%
 
 ## How to use the gambling machine
