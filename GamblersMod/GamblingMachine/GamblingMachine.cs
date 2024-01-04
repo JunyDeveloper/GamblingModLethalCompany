@@ -139,25 +139,25 @@ namespace GamblersMod.Patches
             }
         }
 
-        public void PlayGambleResultAudio()
+        public void PlayGambleResultAudio(string outcome)
         {
-            if (currentGamblingOutcome == GamblingOutcome.JACKPOT)
+            if (outcome == GamblingOutcome.JACKPOT)
             {
                 AudioSource.PlayClipAtPoint(Plugin.GamblingJackpotScrapAudio, transform.position, 0.6f);
             }
-            else if (currentGamblingOutcome == GamblingOutcome.TRIPLE)
+            else if (outcome == GamblingOutcome.TRIPLE)
             {
                 AudioSource.PlayClipAtPoint(Plugin.GamblingTripleScrapAudio, transform.position, 0.6f);
             }
-            else if (currentGamblingOutcome == GamblingOutcome.DOUBLE)
+            else if (outcome == GamblingOutcome.DOUBLE)
             {
                 AudioSource.PlayClipAtPoint(Plugin.GamblingDoubleScrapAudio, transform.position, 0.6f);
             }
-            else if (currentGamblingOutcome == GamblingOutcome.HALVE)
+            else if (outcome == GamblingOutcome.HALVE)
             {
                 AudioSource.PlayClipAtPoint(Plugin.GamblingHalveScrapAudio, transform.position, 0.6f);
             }
-            else if (currentGamblingOutcome == GamblingOutcome.REMOVE)
+            else if (outcome == GamblingOutcome.REMOVE)
             {
                 AudioSource.PlayClipAtPoint(Plugin.GamblingRemoveScrapAudio, transform.position, 0.6f);
             }
