@@ -121,23 +121,33 @@ namespace GamblersMod.Player
                 return;
             }
 
+            if (!scrapBeingGambledRef.TryGet(out GrabbableObject scrapBeingGambled))
+            {
+                Plugin.mls.LogError("ActivateGamblingMachineServerRPC: Failed to get scrap value on client side.");
+                return;
+            }
+
+
             // TODO (Think about this flow better): Tell all clients to activate their gambling machine cooldown
             BeginGamblingMachineCooldownClientRpc(GambleMachineHitRef);
 
             Plugin.mls.LogMessage("ActivateGamblingMachineServerRPC: Starting gambling machine cooldown phase in the server invoked by: " + serverRpcParams.Receive.SenderClientId);
 
 
-            // Roll dice on server side and send roll value to clients
+            // Server side logic and send down the final scrap value
             int roll = GambleMachineHit.RollDice();
+            GambleMachineHit.SetRoll(roll);
+            GambleMachineHit.GenerateGamblingOutcomeFromCurrentRoll();
+            int updatedScrapValue = GambleMachineHit.GetScrapValueBasedOnGambledOutcome(scrapBeingGambled);
 
-            ActivateGamblingMachineClientRPC(GambleMachineHitRef, scrapBeingGambledRef, roll);
+            ActivateGamblingMachineClientRPC(GambleMachineHitRef, scrapBeingGambledRef, updatedScrapValue);
 
             Plugin.mls.LogMessage("Unlocking gambling machine");
             lockGamblingMachineServer = false; // TODO: Think about this better since this is hacky
         }
 
         [ClientRpc]
-        void ActivateGamblingMachineClientRPC(NetworkBehaviourReference GambleMachineHitRef, NetworkBehaviourReference scrapBeingGambledRef, int roll)
+        void ActivateGamblingMachineClientRPC(NetworkBehaviourReference GambleMachineHitRef, NetworkBehaviourReference scrapBeingGambledRef, int updatedScrapValue)
         {
             Plugin.mls.LogInfo("ActivateGamblingMachineClientRPC: Activiating gambling machines on client...");
 
@@ -179,11 +189,11 @@ namespace GamblersMod.Player
                     return;
                 }
 
-                GambleMachineHit.SetRoll(roll);
-                GambleMachineHit.GenerateGamblingOutcomeFromCurrentRoll();
+                // GambleMachineHit.SetRoll(roll);
+                // GambleMachineHit.GenerateGamblingOutcomeFromCurrentRoll();
 
                 // Update scrap value for all client
-                scrapBeingGambled.SetScrapValue(GambleMachineHit.GetScrapValueBasedOnGambledOutcome(scrapBeingGambled));
+                scrapBeingGambled.SetScrapValue(updatedScrapValue);
                 GambleMachineHit.PlayGambleResultAudio();
             });
         }
