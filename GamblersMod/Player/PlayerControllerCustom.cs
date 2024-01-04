@@ -190,7 +190,7 @@ namespace GamblersMod.Player
                 }
 
                 // GambleMachineHit.SetRoll(roll);
-                // GambleMachineHit.GenerateGamblingOutcomeFromCurrentRoll();
+                // GambleMachineHit.GenerateGamblingOutcomeFromCurrentRoll(); 
 
                 // Update scrap value for all client
                 scrapBeingGambled.SetScrapValue(updatedScrapValue);
