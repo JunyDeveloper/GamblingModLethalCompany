@@ -143,7 +143,7 @@ namespace GamblersMod.Player
             ActivateGamblingMachineClientRPC(GambleMachineHitRef, scrapBeingGambledRef, updatedScrapValue);
 
             Plugin.mls.LogMessage("Unlocking gambling machine");
-            lockGamblingMachineServer = false; // TODO: Think about this better since this is hacky
+            lockGamblingMachineServer = false; // TODO: Think about this better since this is hacky 
         }
 
         [ClientRpc]

@@ -1,7 +1,8 @@
 # CHANGELOG
 
 ## 1.1.1
-- Attempted to fix bug that allowed multiple people to constantly spam the machine (gambling addicts...) which caused strange gambling outcomes!
+- Maybe fixed bug that allowed multiple people to constantly spam the machine (gambling addicts...) which caused strange gambling outcomes!
+- Maybe helped alleviate some desync for scrap value
 - For the default configuration, increase halve chance by 3% and decrease double by 3%
 
 ## 1.1.0
