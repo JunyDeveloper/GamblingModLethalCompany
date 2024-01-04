@@ -11,7 +11,7 @@
 - For the default configuration, increase double chance by 3% and decrease zero chance by 3%
 
 ## 1.0.8
-- Fix gambling machinme activating multiple times in one interaction
+- Fix gambling machine activating multiple times in one interaction
 
 ## 1.0.7
 - Fix interaction key showing up incorrectly
