@@ -140,14 +140,14 @@ namespace GamblersMod.Player
             GambleMachineHit.GenerateGamblingOutcomeFromCurrentRoll();
             int updatedScrapValue = GambleMachineHit.GetScrapValueBasedOnGambledOutcome(scrapBeingGambled);
 
-            ActivateGamblingMachineClientRPC(GambleMachineHitRef, scrapBeingGambledRef, updatedScrapValue);
+            ActivateGamblingMachineClientRPC(GambleMachineHitRef, scrapBeingGambledRef, updatedScrapValue, GambleMachineHit.currentGamblingOutcome);
 
             Plugin.mls.LogMessage("Unlocking gambling machine");
             lockGamblingMachineServer = false; // TODO: Think about this better since this is hacky 
         }
 
         [ClientRpc]
-        void ActivateGamblingMachineClientRPC(NetworkBehaviourReference GambleMachineHitRef, NetworkBehaviourReference scrapBeingGambledRef, int updatedScrapValue)
+        void ActivateGamblingMachineClientRPC(NetworkBehaviourReference GambleMachineHitRef, NetworkBehaviourReference scrapBeingGambledRef, int updatedScrapValue, string outcome)
         {
             Plugin.mls.LogInfo("ActivateGamblingMachineClientRPC: Activiating gambling machines on client...");
 
@@ -190,11 +190,11 @@ namespace GamblersMod.Player
                 }
 
                 // GambleMachineHit.SetRoll(roll);
-                // GambleMachineHit.GenerateGamblingOutcomeFromCurrentRoll();
+                // GambleMachineHit.GenerateGamblingOutcomeFromCurrentRoll(); 
 
                 // Update scrap value for all client
                 scrapBeingGambled.SetScrapValue(updatedScrapValue);
-                GambleMachineHit.PlayGambleResultAudio();
+                GambleMachineHit.PlayGambleResultAudio(outcome);
             });
         }
 

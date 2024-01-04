@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.1.2
+- Fix gambling result audio not playing for other players
+
 ## 1.1.1
 - Maybe fixed bug that allowed multiple people to constantly spam the machine (gambling addicts...) which caused strange gambling outcomes!
 - Maybe helped alleviate some desync for scrap value
