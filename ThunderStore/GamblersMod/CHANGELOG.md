@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.1.1
+- Maybe fixed bug that allowed multiple people to constantly spam the machine (gambling addicts...) which caused strange gambling outcomes!
+- Maybe helped alleviate some desync for scrap value
+- For the default configuration, increase halve chance by 3% and decrease double by 3%
+
 ## 1.1.0
 - Update readme
 
@@ -7,7 +12,7 @@
 - For the default configuration, increase double chance by 3% and decrease zero chance by 3%
 
 ## 1.0.8
-- Fix gambling machining activing multiple times in one interaction
+- Fix gambling machine activating multiple times in one interaction
 
 ## 1.0.7
 - Fix interaction key showing up incorrectly

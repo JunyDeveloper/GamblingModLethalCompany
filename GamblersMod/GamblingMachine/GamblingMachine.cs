@@ -39,6 +39,9 @@ namespace GamblersMod.Patches
         public float currentGamblingOutcomeMultiplier = 1;
         public string currentGamblingOutcome = GamblingOutcome.DEFAULT;
 
+        // TODO (Think about this better)
+        private Coroutine CountdownCooldownCoroutineBeingRan;
+
         void Awake()
         {
             Plugin.mls.LogInfo("GamblingMachine has Awoken");
@@ -167,8 +170,12 @@ namespace GamblersMod.Patches
 
         public void BeginGamblingMachineCooldown(Action onCountdownFinish)
         {
-            gamblingMachineCurrentCooldown = gamblingMachineMaxCooldown;
-            StartCoroutine(CountdownCooldownCoroutine(onCountdownFinish));
+            SetCurrentGamblingCooldownToMaxCooldown();
+            if (CountdownCooldownCoroutineBeingRan != null)
+            {
+                StopCoroutine(CountdownCooldownCoroutineBeingRan); // Insurance
+            }
+            CountdownCooldownCoroutineBeingRan = StartCoroutine(CountdownCooldownCoroutine(onCountdownFinish));
         }
 
         public bool isInCooldownPhase()
@@ -187,6 +194,11 @@ namespace GamblersMod.Patches
             }
             onCountdownFinish();
             Plugin.mls.LogMessage("End gambling machine cooldown");
+        }
+
+        public void SetCurrentGamblingCooldownToMaxCooldown()
+        {
+            gamblingMachineCurrentCooldown = gamblingMachineMaxCooldown;
         }
 
         public void SetRoll(int newRoll)
