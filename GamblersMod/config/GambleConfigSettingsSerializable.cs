@@ -7,6 +7,9 @@ namespace GamblersMod.config
     [Serializable]
     public class GambleConfigSettingsSerializable
     {
+        //General
+        public int configMaxCooldown;
+
         // Gambling chances
         public int configJackpotChance;
         public int configTripleChance;
@@ -27,6 +30,9 @@ namespace GamblersMod.config
 
         public GambleConfigSettingsSerializable(ConfigFile configFile)
         {
+            // General
+            configFile.Bind(GAMBLING_GENERAL_SECTION_KEY, CONFIG_MAXCOOLDOWN, 4, "Cooldown of the machine.");
+
             // Chance
             configFile.Bind(GAMBLING_CHANCE_SECTION_KEY, CONFIG_JACKPOT_CHANCE_KEY, 3, "Chance to roll a jackpot. Ex. If set to 3, you have a 3% chance to get a jackpot. Make sure ALL your chance values add up to 100 or else the math won't make sense!");
             configFile.Bind(GAMBLING_CHANCE_SECTION_KEY, CONFIG_TRIPLE_CHANCE_KEY, 11, "Chance to roll a triple. Ex. If set to 11, you have a 11% chance to get a triple. Make sure ALL your chance values add up to 100 or else the math won't make sense!");
@@ -44,6 +50,8 @@ namespace GamblersMod.config
             // Audio
             configFile.Bind(GAMBLING_AUDIO_SECTION_KEY, CONFIG_GAMBLING_MUSIC_ENABLED, true, "Enable gambling machine music (CLIENT SIDE)");
             configFile.Bind(GAMBLING_AUDIO_SECTION_KEY, CONFIG_GAMBLING_MUSIC_VOLUME, 0.35f, "Gambling machine music volume (CLIENT SIDE)");
+
+            configMaxCooldown = GetConfigFileKeyValue<int>(configFile, GAMBLING_GENERAL_SECTION_KEY, CONFIG_MAXCOOLDOWN);
 
             configJackpotChance = GetConfigFileKeyValue<int>(configFile, GAMBLING_CHANCE_SECTION_KEY, CONFIG_JACKPOT_CHANCE_KEY);
             configTripleChance = GetConfigFileKeyValue<int>(configFile, GAMBLING_CHANCE_SECTION_KEY, CONFIG_TRIPLE_CHANCE_KEY);
@@ -66,6 +74,8 @@ namespace GamblersMod.config
         private void LogInitializedConfigsValues()
         {
             var pluginLogger = Plugin.mls;
+            pluginLogger.LogInfo($"Cooldown value from config: {configMaxCooldown}");
+
             pluginLogger.LogInfo($"Jackpot chance value from config: {configJackpotChance}");
             pluginLogger.LogInfo($"Triple chance value from config: {configTripleChance}");
             pluginLogger.LogInfo($"Double chance value from config: {configDoubleChance}");

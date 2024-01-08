@@ -81,6 +81,8 @@ namespace GamblersMod.config
 
             var pluginLogger = Plugin.mls;
 
+            pluginLogger.LogInfo($"Cooldown value from config: {Plugin.CurrentUserConfig.configMaxCooldown}");
+
             pluginLogger.LogInfo($"Jackpot chance value from config: {Plugin.CurrentUserConfig.configJackpotChance}");
             pluginLogger.LogInfo($"Triple chance value from config: {Plugin.CurrentUserConfig.configTripleChance}");
             pluginLogger.LogInfo($"Double chance value from config: {Plugin.CurrentUserConfig.configDoubleChance}");
