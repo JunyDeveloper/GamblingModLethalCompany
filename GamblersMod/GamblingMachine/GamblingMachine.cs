@@ -13,10 +13,11 @@ namespace GamblersMod.Patches
         public int gamblingMachineCurrentCooldown = 0;
 
         // Multipliers for winning or losing
-        int jackpotMultiplier;
-        int tripleMultiplier;
-        int doubleMultiplier;
+        float jackpotMultiplier;
+        float tripleMultiplier;
+        float doubleMultiplier;
         float halvedMultiplier;
+        float zeroMultiplier;
 
         // Percentages for the outcome of gambling
         int jackpotPercentage;
@@ -24,7 +25,6 @@ namespace GamblersMod.Patches
         int doublePercentage;
         int halvedPercentage;
         int removedPercentage;
-        int zeroMultiplier;
 
         // Audio
         bool isMusicEnabled = true;
@@ -33,7 +33,7 @@ namespace GamblersMod.Patches
         // Dice roll range (inclusive)
         int rollMinValue;
         int rollMaxValue;
-        int currentRoll = 1;
+        int currentRoll = 100;
 
         // Current state
         public float currentGamblingOutcomeMultiplier = 1;

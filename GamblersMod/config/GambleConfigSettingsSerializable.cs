@@ -15,11 +15,11 @@ namespace GamblersMod.config
         public int configZeroChance;
 
         // Gambling multipliers
-        public int configJackpotMultiplier;
-        public int configTripleMultiplier;
-        public int configDoubleMultiplier;
+        public float configJackpotMultiplier;
+        public float configTripleMultiplier;
+        public float configDoubleMultiplier;
         public float configHalveMultiplier;
-        public int configZeroMultiplier;
+        public float configZeroMultiplier;
 
         // Audio
         public bool configGamblingMusicEnabled;
@@ -51,11 +51,11 @@ namespace GamblersMod.config
             configHalveChance = GetConfigFileKeyValue<int>(configFile, GAMBLING_CHANCE_SECTION_KEY, CONFIG_HALVE_CHANCE_KEY);
             configZeroChance = GetConfigFileKeyValue<int>(configFile, GAMBLING_CHANCE_SECTION_KEY, CONFIG_ZERO_CHANCE_KEY);
 
-            configJackpotMultiplier = GetConfigFileKeyValue<int>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_JACKPOT_MULTIPLIER);
-            configTripleMultiplier = GetConfigFileKeyValue<int>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_TRIPLE_MULTIPLIER);
-            configDoubleMultiplier = GetConfigFileKeyValue<int>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_DOUBLE_MULTIPLIER);
+            configJackpotMultiplier = GetConfigFileKeyValue<float>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_JACKPOT_MULTIPLIER);
+            configTripleMultiplier = GetConfigFileKeyValue<float>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_TRIPLE_MULTIPLIER);
+            configDoubleMultiplier = GetConfigFileKeyValue<float>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_DOUBLE_MULTIPLIER);
             configHalveMultiplier = GetConfigFileKeyValue<float>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_HALVE_MULTIPLIER);
-            configZeroMultiplier = GetConfigFileKeyValue<int>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_ZERO_MULTIPLIER);
+            configZeroMultiplier = GetConfigFileKeyValue<float>(configFile, GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_ZERO_MULTIPLIER);
 
             configGamblingMusicEnabled = GetConfigFileKeyValue<bool>(configFile, GAMBLING_AUDIO_SECTION_KEY, CONFIG_GAMBLING_MUSIC_ENABLED);
             configGamblingMusicVolume = GetConfigFileKeyValue<float>(configFile, GAMBLING_AUDIO_SECTION_KEY, CONFIG_GAMBLING_MUSIC_VOLUME);
@@ -80,8 +80,6 @@ namespace GamblersMod.config
 
             pluginLogger.LogInfo($"gambling music enabled from config: {configGamblingMusicEnabled}");
             pluginLogger.LogInfo($"gambling music volume from config: {configGamblingMusicVolume}");
-
-            // For each 
         }
 
         private T GetConfigFileKeyValue<T>(ConfigFile configFile, string section, string key)
