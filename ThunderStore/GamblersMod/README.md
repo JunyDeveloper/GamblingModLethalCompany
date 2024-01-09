@@ -35,6 +35,8 @@ While holding a scrap, walk up to the machine and press "E" (your interaction ke
 
 ## Configurable Fields
 
+- General Settings
+  - Cooldown Time
 - Gambling Chance fields (make sure these fields add up to 100; if not it'll still work, but math will be inaccurate)
   - Jackpot Chance
   - Triple Chance
