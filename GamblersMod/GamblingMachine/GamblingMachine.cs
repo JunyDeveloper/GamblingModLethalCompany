@@ -9,7 +9,7 @@ namespace GamblersMod.Patches
     internal class GamblingMachine : NetworkBehaviour
     {
         // Cooldown
-        int gamblingMachineMaxCooldown = 4;
+        int gamblingMachineMaxCooldown;
         public int gamblingMachineCurrentCooldown = 0;
 
         // Multipliers for winning or losing
@@ -46,6 +46,9 @@ namespace GamblersMod.Patches
         {
             Plugin.mls.LogInfo("GamblingMachine has Awoken");
 
+            //General
+            gamblingMachineMaxCooldown = Plugin.CurrentUserConfig.configMaxCooldown;
+
             // Multipliers
             jackpotMultiplier = Plugin.CurrentUserConfig.configJackpotMultiplier;
             tripleMultiplier = Plugin.CurrentUserConfig.configTripleMultiplier;
@@ -63,6 +66,8 @@ namespace GamblersMod.Patches
             // Audio 
             isMusicEnabled = Plugin.CurrentUserConfig.configGamblingMusicEnabled;
             musicVolume = Plugin.CurrentUserConfig.configGamblingMusicVolume;
+
+            Plugin.mls.LogInfo($"GamblingMachine: gamblingMachineMaxCooldown loaded from config: {gamblingMachineMaxCooldown}");
 
             Plugin.mls.LogInfo($"GamblingMachine: jackpotMultiplier loaded from config: {jackpotMultiplier}");
             Plugin.mls.LogInfo($"GamblingMachine: tripleMultiplier loaded from config: {tripleMultiplier}");
