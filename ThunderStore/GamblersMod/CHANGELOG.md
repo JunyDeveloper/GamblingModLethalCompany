@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.1.3
+- Update the configurable multiplier fields to allow decimal numbers (previously only allowed whole numbers)
+- 
+
 ## 1.1.2
 - Fix gambling result audio not playing for other players
 

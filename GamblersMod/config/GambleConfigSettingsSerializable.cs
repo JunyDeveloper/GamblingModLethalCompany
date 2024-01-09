@@ -35,11 +35,11 @@ namespace GamblersMod.config
             configFile.Bind(GAMBLING_CHANCE_SECTION_KEY, CONFIG_ZERO_CHANCE_KEY, 9, "Chance to roll a zero. Ex. If set to 12, you have a 12% chance to get a zero. Make sure ALL your chance values add up to 100 or else the math won't make sense!");
 
             // Multipliers
-            configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_JACKPOT_MULTIPLIER, 10, "Jackpot multiplier");
-            configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_TRIPLE_MULTIPLIER, 3, "Triple multiplier");
-            configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_DOUBLE_MULTIPLIER, 2, "Double multiplier");
+            configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_JACKPOT_MULTIPLIER, 10f, "Jackpot multiplier");
+            configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_TRIPLE_MULTIPLIER, 3f, "Triple multiplier");
+            configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_DOUBLE_MULTIPLIER, 2f, "Double multiplier");
             configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_HALVE_MULTIPLIER, 0.5f, "Halve multiplier");
-            configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_ZERO_MULTIPLIER, 0, "Zero multiplier");
+            configFile.Bind(GAMBLING_MULTIPLIERS_SECTION_KEY, CONFIG_ZERO_MULTIPLIER, 0f, "Zero multiplier");
 
             // Audio
             configFile.Bind(GAMBLING_AUDIO_SECTION_KEY, CONFIG_GAMBLING_MUSIC_ENABLED, true, "Enable gambling machine music (CLIENT SIDE)");
