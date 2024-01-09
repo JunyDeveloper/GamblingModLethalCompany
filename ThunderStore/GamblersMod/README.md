@@ -36,7 +36,7 @@ While holding a scrap, walk up to the machine and press "E" (your interaction ke
 ## Configurable Fields
 
 - General Settings
-  - Cooldown Time
+  - Cooldown Time (reducing this will cause the drumroll sound to not sync & may also cause latency issues)
 - Gambling Chance fields (make sure these fields add up to 100; if not it'll still work, but math will be inaccurate)
   - Jackpot Chance
   - Triple Chance

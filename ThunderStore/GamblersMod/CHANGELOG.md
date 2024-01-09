@@ -1,8 +1,8 @@
 # CHANGELOG
 
 ## 1.1.3
-- Update the configurable multiplier fields to allow decimal numbers (previously only allowed whole numbers)
-- 
+- Updated the configurable multiplier fields to allow decimal numbers (previously only allowed whole numbers)
+- Changing the machine's cooldown is now available in the configuration file! (Thanks Adam759 for working on this!)
 
 ## 1.1.2
 - Fix gambling result audio not playing for other players
