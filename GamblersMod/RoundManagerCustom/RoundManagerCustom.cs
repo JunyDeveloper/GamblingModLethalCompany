@@ -24,13 +24,7 @@ namespace GamblersMod.RoundManagerCustomSpace
         {
             Plugin.mls.LogInfo($"Attempting to spawn gambling machine at {RoundManager.currentLevel.name}");
             Vector3 gamblingMachineSpawnPoint = new Vector3(-27.808f, -2.6256f, -9.7409f);
-
-            GamblingMachine = UnityEngine.Object.Instantiate(Plugin.GamblingMachine, gamblingMachineSpawnPoint, Quaternion.Euler(0, 90, 0));
-            GamblingMachine.tag = "Untagged";
-            GamblingMachine.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            GamblingMachine.layer = LayerMask.NameToLayer("InteractableObject");
-
-            GamblingMachine.GetComponent<NetworkObject>().Spawn();
+            Plugin.GamblingMachineManager.GetComponent<GamblingMachineManager.GamblingMachineManager>().Spawn(gamblingMachineSpawnPoint, Quaternion.Euler(0, 90, 0));
         }
     }
 }
