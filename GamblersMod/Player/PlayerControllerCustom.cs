@@ -63,7 +63,7 @@ namespace GamblersMod.Player
 
                         // string interactKeyName = PlayerControllerOriginal.playerActions.FindAction("Interact").GetBindingDisplayString(0);
                         string interactKeyName = IngamePlayerSettings.Instance.playerInput.actions.FindAction("Interact").GetBindingDisplayString(0); ;
-                        PlayerGamblingUIManager.SetInteractionText($"Press {interactKeyName} to gamble");
+                        PlayerGamblingUIManager.SetInteractionText($"Gamble: [{IngamePlayerSettings.Instance.playerInput.actions.FindAction("Interact").GetBindingDisplayString(0)}]");
                     }
 
                     // Object in hand so show subtext
