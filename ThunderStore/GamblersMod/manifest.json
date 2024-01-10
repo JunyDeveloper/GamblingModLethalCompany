@@ -1,6 +1,6 @@
 {
     "name": "GamblingMachineAtTheCompany",
-    "version_number": "1.1.3",
+    "version_number": "1.2.3",
     "website_url": "https://github.com/JunyDeveloper/GamblingModLethalCompany",
     "description": "Adds a gambling machine to gamble your scraps at The Company moon. A great last ditch effort to not get ejected... or maybe you're just a gambling addict. Clients automatically sync with hosts gambling configuration when they join. Good luck!",
     "dependencies": [

@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.2.3
+- Updated the interaction text and font
+
 ## 1.1.3
 - Updated the configurable multiplier fields to allow decimal numbers (previously only allowed whole numbers)
 - Changing the machine's cooldown is now available in the configuration file! (Thanks Adam759 for working on this!)

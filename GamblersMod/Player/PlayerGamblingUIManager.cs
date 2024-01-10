@@ -24,7 +24,6 @@ namespace GamblersMod.Patches
             gamblingMachineInteractionTextCanvasObject.transform.parent = transform;
 
             interactionName = "gamblingMachine";
-            interactionText = "Press E to gamble";
 
             gamblingMachineInteractionTextCanvasObject.name = $"{interactionName}InteractionTextCanvasObject";
             gamblingMachineInteractionTextCanvasObject.AddComponent<Canvas>();
@@ -44,7 +43,7 @@ namespace GamblersMod.Patches
             gamblingMachineInteractionText = gamblingMachineInteractionTextObject.GetComponent<Text>();
             gamblingMachineInteractionText.text = interactionText;
             gamblingMachineInteractionText.alignment = TextAnchor.MiddleCenter;
-            gamblingMachineInteractionText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            gamblingMachineInteractionText.font = Plugin.GamblingFont;
             gamblingMachineInteractionText.rectTransform.sizeDelta = new Vector2(300, 200);
             gamblingMachineInteractionText.fontSize = 26;
 
@@ -59,12 +58,18 @@ namespace GamblersMod.Patches
             gamblingMachineInteractionScrapInfoText = gamblingMachineInteractionScrapInfoTextObject.GetComponent<Text>();
             gamblingMachineInteractionScrapInfoText.text = interactionText;
             gamblingMachineInteractionScrapInfoText.alignment = TextAnchor.MiddleCenter;
-            gamblingMachineInteractionScrapInfoText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            gamblingMachineInteractionScrapInfoText.font = Plugin.GamblingFont;
             gamblingMachineInteractionScrapInfoText.rectTransform.sizeDelta = new Vector2(300, 200);
-            gamblingMachineInteractionScrapInfoText.fontSize = 15;
+            gamblingMachineInteractionScrapInfoText.fontSize = 16;
             gamblingMachineInteractionScrapInfoText.color = Color.green;
 
             gamblingMachineInteractionScrapInfoText.transform.parent = gamblingMachineInteractionTextCanvasObject.transform;
+
+            // Hand icon
+            // Vector3 interactionIconPosition = new Vector3((gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.width / 2) - 20, (gamblingMachineInteractionTextCanvas.GetComponent<RectTransform>().rect.height / 2) - 100, 0);
+            // GameObject interactionIcon = UnityEngine.Object.Instantiate(Plugin.GamblingHandIcon, interactionIconPosition, Quaternion.Euler(0, 90, 0));
+            // interactionIcon.transform.parent = gamblingMachineInteractionTextCanvasObject.transform;
+
         }
 
         public void SetInteractionText(string text)

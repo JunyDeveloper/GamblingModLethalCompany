@@ -30,6 +30,8 @@ namespace GamblersMod
         public static GameObject GamblingATMMachine;
         public static AudioClip GamblingMachineMusicAudio;
         public static GameObject GamblingMachineResultCanvas;
+        public static Font GamblingFont;
+        public static GameObject GamblingHandIcon;
 
         // Configuration state
         public static GambleConfigSettingsSerializable UserConfigSnapshot; // Snapshot of the user configuration set in their CFG file
@@ -75,8 +77,9 @@ namespace GamblersMod
             GamblingMachineMusicAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "machineMusic");
             GamblingDoubleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "doublekill");
             GamblingTripleScrapAudio = LoadAssetFromAssetBundleAndLogInfo<AudioClip>(gamblersBundle, "triplekill");
-            GamblingMachineResultCanvas = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachineResultCanvas"); // ?
+            GamblingFont = LoadAssetFromAssetBundleAndLogInfo<Font>(gamblersBundle, "3270-Regular");
             GamblingMachine = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "GamblingMachine");
+            GamblingHandIcon = LoadAssetFromAssetBundleAndLogInfo<GameObject>(gamblersBundle, "HandIconGO");
 
             // Attach the gambling machine script to the gambling machine game object
             GamblingMachine.AddComponent<GamblingMachine>();
