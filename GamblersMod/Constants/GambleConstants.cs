@@ -9,27 +9,27 @@
         public readonly static string GAMBLING_AUDIO_SECTION_KEY = "Audio";
 
         // General Subsection keys
-        public readonly static string CONFIG_MAXCOOLDOWN = "gamblingMachineMaxCooldown";
-        public readonly static string CONFIG_NUMBER_OF_USES = "numberOfUses";
-        public readonly static string CONFIG_NUMBER_OF_MACHINES = "numberOfMachines";
+        public readonly static string CONFIG_MAXCOOLDOWN = "Max Cooldown";
+        public readonly static string CONFIG_NUMBER_OF_USES = "Number Of Uses";
+        public readonly static string CONFIG_NUMBER_OF_MACHINES = "Number Of Machines";
 
         // Chance subsection keys
-        public readonly static string CONFIG_JACKPOT_CHANCE_KEY = "JackpotChance";
-        public readonly static string CONFIG_TRIPLE_CHANCE_KEY = "TripleChance";
-        public readonly static string CONFIG_DOUBLE_CHANCE_KEY = "DoubleChance";
-        public readonly static string CONFIG_HALVE_CHANCE_KEY = "HalveChance";
-        public readonly static string CONFIG_ZERO_CHANCE_KEY = "ZeroChance";
+        public readonly static string CONFIG_JACKPOT_CHANCE_KEY = "Jackpot Chance";
+        public readonly static string CONFIG_TRIPLE_CHANCE_KEY = "Triple Chance";
+        public readonly static string CONFIG_DOUBLE_CHANCE_KEY = "Double Chance";
+        public readonly static string CONFIG_HALVE_CHANCE_KEY = "Halve Chance";
+        public readonly static string CONFIG_ZERO_CHANCE_KEY = "Zero Chance";
 
         // Multipliers subsection keys
-        public readonly static string CONFIG_JACKPOT_MULTIPLIER = "JackpotMultiplier";
-        public readonly static string CONFIG_TRIPLE_MULTIPLIER = "TripleMultiplier";
-        public readonly static string CONFIG_DOUBLE_MULTIPLIER = "DoubleMultiplier";
-        public readonly static string CONFIG_HALVE_MULTIPLIER = "HalveMultiplier";
-        public readonly static string CONFIG_ZERO_MULTIPLIER = "ZeroMultiplier";
+        public readonly static string CONFIG_JACKPOT_MULTIPLIER = "Jackpot Multiplier";
+        public readonly static string CONFIG_TRIPLE_MULTIPLIER = "Triple Multiplier";
+        public readonly static string CONFIG_DOUBLE_MULTIPLIER = "Double Multiplier";
+        public readonly static string CONFIG_HALVE_MULTIPLIER = "Halve Multiplier";
+        public readonly static string CONFIG_ZERO_MULTIPLIER = "Zero Multiplier";
 
         // Audio subsection keys
-        public readonly static string CONFIG_GAMBLING_MUSIC_ENABLED = "GambleMachineMusicEnabled";
-        public readonly static string CONFIG_GAMBLING_MUSIC_VOLUME = "GambleMachineMusicVolume";
+        public readonly static string CONFIG_GAMBLING_MUSIC_ENABLED = "Music Enabled";
+        public readonly static string CONFIG_GAMBLING_MUSIC_VOLUME = "Machine Music Volume";
 
         // Used for host and client message communication for configuration
         public readonly static string ON_HOST_RECIEVES_CLIENT_CONFIG_REQUEST = "OnHostRecievesClientConfigRequest";
