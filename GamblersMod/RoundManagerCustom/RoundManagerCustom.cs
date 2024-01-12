@@ -18,6 +18,7 @@ namespace GamblersMod.RoundManagerCustomSpace
             spawnPoints.Add(new Vector3(-27.808f, -2.6256f, -9.7409f));
             spawnPoints.Add(new Vector3(-27.808f, -2.6256f, -4.7409f));
             spawnPoints.Add(new Vector3(-27.808f, -2.6256f, 0.7409f));
+            spawnPoints.Add(new Vector3(-27.808f, -2.6256f, 4.7409f));
         }
 
         [ServerRpc]
@@ -33,8 +34,8 @@ namespace GamblersMod.RoundManagerCustomSpace
 
             for (int i = 0; i < Plugin.CurrentUserConfig.configNumberOfMachines; i++)
             {
-                // hacky, but no more than 3 machines
-                if (i >= 3) return;
+                // Machine spawn per vector points
+                if (i >= spawnPoints.Count) return;
                 Plugin.mls.LogInfo($"AA: {spawnPoints}");
                 Plugin.mls.LogInfo($"AAWW: {spawnPoints[i]}");
                 GamblingMachineManager.Instance.Spawn(spawnPoints[i], Quaternion.Euler(0, 90, 0));

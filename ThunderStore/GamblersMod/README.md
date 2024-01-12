@@ -32,7 +32,7 @@ While holding a scrap, walk up to the machine and press "E" (or your interaction
 - Gambling
 - Configurable gambling chances
 - Configurable gambling scrap multipliers
-- Configurable additions of gambling machines (up to 3)
+- Configurable additions of gambling machines
 - Configurable number of uses for gambling machine
 - Client's configuration automatically syncs with the host
 
