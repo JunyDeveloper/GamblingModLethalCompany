@@ -44,7 +44,7 @@ namespace GamblersMod.Patches
             gamblingMachineInteractionText.text = interactionText;
             gamblingMachineInteractionText.alignment = TextAnchor.MiddleCenter;
             gamblingMachineInteractionText.font = Plugin.GamblingFont;
-            gamblingMachineInteractionText.rectTransform.sizeDelta = new Vector2(300, 200);
+            gamblingMachineInteractionText.rectTransform.sizeDelta = new Vector2(300, 400);
             gamblingMachineInteractionText.fontSize = 26;
 
             gamblingMachineInteractionText.transform.parent = gamblingMachineInteractionTextCanvasObject.transform;
@@ -60,7 +60,7 @@ namespace GamblersMod.Patches
             gamblingMachineInteractionScrapInfoText.alignment = TextAnchor.MiddleCenter;
             gamblingMachineInteractionScrapInfoText.font = Plugin.GamblingFont;
             gamblingMachineInteractionScrapInfoText.rectTransform.sizeDelta = new Vector2(300, 200);
-            gamblingMachineInteractionScrapInfoText.fontSize = 16;
+            gamblingMachineInteractionScrapInfoText.fontSize = 18;
             gamblingMachineInteractionScrapInfoText.color = Color.green;
 
             gamblingMachineInteractionScrapInfoText.transform.parent = gamblingMachineInteractionTextCanvasObject.transform;

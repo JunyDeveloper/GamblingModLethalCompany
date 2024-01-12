@@ -7,8 +7,6 @@ using GamblersMod.Patches;
 using HarmonyLib;
 using UnityEngine;
 
-namespace GamblingMachineManager.GamblingMachineManager;
-
 namespace GamblersMod
 {
     [BepInPlugin(modGUID, modName, modVersion)]
@@ -22,7 +20,6 @@ namespace GamblersMod
 
         public static Plugin Instance;
 
-        public static GameObject GamblingMachineManager;
         public static GameObject GamblingMachine;
         public static AudioClip GamblingJackpotScrapAudio;
         public static AudioClip GamblingHalveScrapAudio;
@@ -87,9 +84,7 @@ namespace GamblersMod
             // Attach the gambling machine script to the gambling machine game object
             GamblingMachine.AddComponent<GamblingMachine>();
 
-            GamblingMachineManager = new GameObject();
-            GamblingMachineManager.AddComponent<GamblingMachineManager>();
-
+            new GameObject().AddComponent<GamblingMachineManager>();
 
             harmony.PatchAll(typeof(Plugin));
             harmony.PatchAll(typeof(GameNetworkManagerPatch));

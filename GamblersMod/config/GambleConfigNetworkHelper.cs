@@ -98,6 +98,9 @@ namespace GamblersMod.config
             pluginLogger.LogInfo($"Audio enabled from config: {Plugin.CurrentUserConfig.configGamblingMusicEnabled}");
             pluginLogger.LogInfo($"Audio volume from config: {Plugin.CurrentUserConfig.configGamblingMusicVolume}");
 
+            pluginLogger.LogInfo($"Number of uses from config: {Plugin.CurrentUserConfig.configNumberOfUses}");
+            pluginLogger.LogInfo($"Number of machines from config: {Plugin.CurrentUserConfig.configNumberOfMachines}");
+
             Plugin.mls.LogInfo("Successfully synced a client with host configuration");
         }
     }

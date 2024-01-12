@@ -107,7 +107,11 @@
     <Compile Include="Constants\GambleConstants.cs" />
     <Compile Include="config\GambleConfigSettingsSerializable.cs" />
     <Compile Include="config\SerializerHelper.cs" />
+    <Compile Include="GamblingMachineManager\GamblingMachineManager.cs" />
+    <Compile Include="GrabbableObjectCustom\GrabbableObjectCustom.cs" />
     <Compile Include="Patches\GameNetworkManagerPatch.cs" />
+    <Compile Include="Patches\GrabbableObjectPatch.cs" />
+    <Compile Include="Patches\StartOfRoundPatch.cs" />
     <Compile Include="Player\PlayerControllerCustom.cs" />
     <Compile Include="Player\PlayerGamblingUIManager.cs" />
     <Compile Include="Plugin.cs" />
@@ -123,5 +127,6 @@
     </None>
     <None Include="manifest.json" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

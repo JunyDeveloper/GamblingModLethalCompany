@@ -3,13 +3,15 @@
     public class GambleConstants
     {
         // Section keys
-        public readonly static string GAMBLING_GENERAL_SECTION_KEY= "General Machine Settings";
+        public readonly static string GAMBLING_GENERAL_SECTION_KEY = "General Machine Settings";
         public readonly static string GAMBLING_CHANCE_SECTION_KEY = "Gambling Chances";
         public readonly static string GAMBLING_MULTIPLIERS_SECTION_KEY = "Gambling Multipliers";
         public readonly static string GAMBLING_AUDIO_SECTION_KEY = "Audio";
 
         // General Subsection keys
         public readonly static string CONFIG_MAXCOOLDOWN = "gamblingMachineMaxCooldown";
+        public readonly static string CONFIG_NUMBER_OF_USES = "numberOfUses";
+        public readonly static string CONFIG_NUMBER_OF_MACHINES = "numberOfMachines";
 
         // Chance subsection keys
         public readonly static string CONFIG_JACKPOT_CHANCE_KEY = "JackpotChance";

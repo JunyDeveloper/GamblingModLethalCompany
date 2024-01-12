@@ -2,24 +2,25 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace GamblersMod.GamblingMachineManager
+namespace GamblersMod
 {
     public class GamblingMachineManager : MonoBehaviour
     {
-        public static List<GameObject> GamblingMachines;
+        public List<GameObject> GamblingMachines;
 
-        public static GamblingMachineManager instance;
+        public static GamblingMachineManager Instance { get; private set; }
         void Awake()
         {
-            if (instance == null)
-                instance = this;
+            if (Instance == null)
+                Instance = this;
             else
                 Destroy(gameObject);
-
+            Plugin.mls.LogMessage($"Gambling machine manager has awoken!");
+            GamblingMachines = new List<GameObject>();
             DontDestroyOnLoad(gameObject);
         }
 
-        public static void Spawn(Vector3 spawnPoint, Quaternion quaternion)
+        public void Spawn(Vector3 spawnPoint, Quaternion quaternion)
         {
             Plugin.mls.LogMessage($"Spawning gambling machine... #{GamblingMachines.Count}");
             GameObject GamblingMachine = UnityEngine.Object.Instantiate(Plugin.GamblingMachine, spawnPoint, quaternion);
@@ -27,10 +28,17 @@ namespace GamblersMod.GamblingMachineManager
             GamblingMachine.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             GamblingMachine.layer = LayerMask.NameToLayer("InteractableObject");
             GamblingMachine.GetComponent<NetworkObject>().Spawn();
+
+            // Only the first gambling machine will play music
+            if (GamblingMachines.Count >= 1)
+            {
+                GamblingMachine.GetComponent<AudioSource>().Pause();
+            }
+
             GamblingMachines.Add(GamblingMachine);
         }
 
-        public static void DespawnAll()
+        public void DespawnAll()
         {
             Plugin.mls.LogMessage($"Despwawning gambling machine...");
             foreach (GameObject GamblingMachine in GamblingMachines)
