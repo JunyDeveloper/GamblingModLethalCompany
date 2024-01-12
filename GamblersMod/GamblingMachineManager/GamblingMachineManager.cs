@@ -44,8 +44,8 @@ namespace GamblersMod
             foreach (GameObject GamblingMachine in GamblingMachines)
             {
                 GamblingMachine.GetComponent<NetworkObject>().Despawn();
-                GamblingMachines.RemoveAt(0);
             }
+            GamblingMachines.Clear();
         }
     }
 }

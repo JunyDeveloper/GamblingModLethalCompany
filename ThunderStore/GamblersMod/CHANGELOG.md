@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.3.3
+- Add configuration to add up to 3 gambling machines!
+- Add configuration to limit the number of uses on a gambling machine
+- Fix gambling machine showing while in orbit
+- Font size changes
+
 ## 1.2.3
 - Updated the interaction text and font
 

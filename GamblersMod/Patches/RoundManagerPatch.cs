@@ -37,5 +37,13 @@ namespace GamblersMod.Patches
 
         }
 
+        [HarmonyPatch("DespawnPropsAtEndOfRound")]
+        [HarmonyPostfix]
+        public static void DespawnPropsAtEndOfRoundPatch()
+        {
+            Plugin.mls.LogInfo("End of round: despawning gambling machines");
+            RoundManagerCustom.DespawnGamblingMachineServerRpc();
+        }
+
     }
 }
