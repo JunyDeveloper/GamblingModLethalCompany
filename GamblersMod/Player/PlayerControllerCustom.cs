@@ -106,6 +106,18 @@ namespace GamblersMod.Player
             }
         }
 
+        public void ReleaseGamblingMachineLock()
+        {
+            Plugin.mls.LogInfo($"Releasing gambling machine lock for: {OwnerClientId}");
+            isUsingGamblingMachine = false;
+        }
+
+        public void LockGamblingMachine()
+        {
+            Plugin.mls.LogInfo($"Locking gambling machine for: {OwnerClientId}");
+            isUsingGamblingMachine = true;
+        }
+
         void handleGamblingMachineInput(GamblingMachine GamblingMachineHit)
         {
             // Get the item the player is currently holding (null checks)
@@ -127,7 +139,6 @@ namespace GamblersMod.Player
             GamblingMachineHit.SetCurrentGamblingCooldownToMaxCooldown();
 
             Plugin.mls.LogMessage($"Scrap value of {currentlyHeldObjectInHand.name} on hand: ▊{currentlyHeldObjectInHand.scrapValue}");
-            isUsingGamblingMachine = true;
             GamblingMachineHit.ActivateGamblingMachineServerRPC(currentlyHeldObjectInHand, this);
             PlayerGamblingUIManager.SetInteractionText($"Cooling down... {GamblingMachineHit.gamblingMachineCurrentCooldown}");
         }

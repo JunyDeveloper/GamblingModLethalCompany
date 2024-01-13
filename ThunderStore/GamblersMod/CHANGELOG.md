@@ -3,6 +3,7 @@
 ## 1.3.4
 - Add configuration to add up to 3 gambling machines!
 - Add configuration to limit the number of uses on a gambling machine
+- Add a fix to prevent machines from getting triggered multiple times when everyone is trying to interact with one machine
 - Fix gambling machine showing while in orbit
 - Font size changes
 

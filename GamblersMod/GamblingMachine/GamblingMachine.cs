@@ -249,12 +249,13 @@ namespace GamblersMod.Patches
             // Potentially block multiple requests from processing
             if (lockGamblingMachineServer)
             {
-                Plugin.mls.LogWarning("Gambling machine is already processing one client's request. Throwing away a request...");
+                Plugin.mls.LogWarning($"Gambling machine is already processing one client's request. Throwing away a request for... {serverRpcParams.Receive.SenderClientId}");
                 return;
             };
 
             lockGamblingMachineServer = true; // Lock any further request
             numberOfUses -= 1;
+            Plugin.mls.LogInfo($"ActivateGamblingMachineServerRPC: Number of uses left: {numberOfUses}");
 
             if (!scrapBeingGambledRef.TryGet(out GrabbableObject scrapBeingGambled))
             {
@@ -262,7 +263,7 @@ namespace GamblersMod.Patches
                 return;
             }
 
-            // TODO (Think about this flow better): Tell all clients to activate their gambling machine cooldown
+            // Tell all clients to activate their gambling machine cooldown
             BeginGamblingMachineCooldownClientRpc();
 
             Plugin.mls.LogMessage("ActivateGamblingMachineServerRPC: Starting gambling machine cooldown phase in the server invoked by: " + serverRpcParams.Receive.SenderClientId);
@@ -272,17 +273,26 @@ namespace GamblersMod.Patches
             GenerateGamblingOutcomeFromCurrentRoll();
             int updatedScrapValue = GetScrapValueBasedOnGambledOutcome(scrapBeingGambled);
 
-            ActivateGamblingMachineClientRPC(scrapBeingGambledRef, playerWhoGambledRef, serverRpcParams.Receive.SenderClientId, updatedScrapValue, currentGamblingOutcome);
-
-            Plugin.mls.LogMessage("Unlocking gambling machine");
-            lockGamblingMachineServer = false;
+            // TODO: This function doesn't need to be this big
+            ActivateGamblingMachineClientRPC(scrapBeingGambledRef, playerWhoGambledRef, serverRpcParams.Receive.SenderClientId, updatedScrapValue, currentGamblingOutcome, numberOfUses);
         }
 
         [ClientRpc]
-        void ActivateGamblingMachineClientRPC(NetworkBehaviourReference scrapBeingGambledRef, NetworkBehaviourReference playerWhoGambledRef, ulong playerWhoGambledId, int updatedScrapValue, string outcome)
+        void ActivateGamblingMachineClientRPC(NetworkBehaviourReference scrapBeingGambledRef, NetworkBehaviourReference playerWhoGambledRef, ulong invokerId, int updatedScrapValue, string outcome, int numberOfUsesServer)
         {
             Plugin.mls.LogInfo("ActivateGamblingMachineClientRPC: Activiating gambling machines on client...");
 
+            // Sync client with server state
+            numberOfUses = numberOfUsesServer;
+            Plugin.mls.LogInfo($"ActivateGamblingMachineClientRPC: Number of uses left: {numberOfUses}");
+
+            if (!playerWhoGambledRef.TryGet(out PlayerControllerCustom playerWhoGambled))
+            {
+                Plugin.mls.LogError("ActivateGamblingMachineClientRPC: Failed to get player who gambled.");
+                return;
+            }
+
+            playerWhoGambled.LockGamblingMachine();
             PlayDrumRoll();
 
             // Start cooldown for all clients
@@ -294,28 +304,28 @@ namespace GamblersMod.Patches
                     return;
                 }
 
-                if (!playerWhoGambledRef.TryGet(out PlayerControllerCustom playerWhoGambled))
-                {
-                    Plugin.mls.LogError("ActivateGamblingMachineClientRPC: Failed to get player who gambled.");
-                    return;
-                }
-
                 // Update scrap value for all client
+                Plugin.mls.LogInfo($"Setting scrap value to: {updatedScrapValue}");
                 scrapBeingGambled.SetScrapValue(updatedScrapValue);
                 PlayGambleResultAudio(outcome);
+                playerWhoGambled.ReleaseGamblingMachineLock();
 
-                // Hacky? Player is allowed to use machine again; not sure if this'll work; needs multiplayer testing
-                if (playerWhoGambled.OwnerClientId == playerWhoGambledId)
+
+                // Server is also a client. We will release the lock on the machine here
+                if (IsServer)
                 {
-                    playerWhoGambled.isUsingGamblingMachine = false;
+                    Plugin.mls.LogMessage("Unlocking gambling machine");
+                    lockGamblingMachineServer = false;
                 }
+
             });
         }
 
-        // TODO: Think about this flow better. Set cooldown for all clients, not counting down yet until the server says so
+        // Set cooldown for all clients, not counting down yet until the server says so
         [ClientRpc]
         void BeginGamblingMachineCooldownClientRpc()
         {
+            Plugin.mls.LogInfo("Setting machine cooldown to max");
             SetCurrentGamblingCooldownToMaxCooldown();
         }
 
