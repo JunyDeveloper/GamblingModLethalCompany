@@ -18,7 +18,7 @@ namespace GamblersMod.RoundManagerCustomSpace
             spawnPoints.Add(new Vector3(-27.808f, -2.6256f, -9.7409f));
             spawnPoints.Add(new Vector3(-27.808f, -2.6256f, -4.7409f));
             spawnPoints.Add(new Vector3(-27.808f, -2.6256f, 0.7409f));
-            spawnPoints.Add(new Vector3(-27.808f, -2.6256f, 4.7409f));
+            spawnPoints.Add(new Vector3(-27.808f, -2.6256f, 6.7409f));
         }
 
         [ServerRpc]
