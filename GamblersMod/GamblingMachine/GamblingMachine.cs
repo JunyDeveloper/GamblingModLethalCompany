@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using GamblersMod.Player;
 using Unity.Netcode;
 using UnityEngine;
 using static GamblersMod.config.GambleConstants;
@@ -42,12 +43,18 @@ namespace GamblersMod.Patches
         // TODO (Think about this better)
         private Coroutine CountdownCooldownCoroutineBeingRan;
 
+        bool lockGamblingMachineServer = false;
+
+        // Limitations
+        public int numberOfUses;
+
         void Awake()
         {
             Plugin.mls.LogInfo("GamblingMachine has Awoken");
 
-            //General
+            // General
             gamblingMachineMaxCooldown = Plugin.CurrentUserConfig.configMaxCooldown;
+            numberOfUses = Plugin.CurrentUserConfig.configNumberOfUses;
 
             // Multipliers
             jackpotMultiplier = Plugin.CurrentUserConfig.configJackpotMultiplier;
@@ -225,6 +232,101 @@ namespace GamblersMod.Patches
         public int GetScrapValueBasedOnGambledOutcome(GrabbableObject scrap)
         {
             return (int)Mathf.Floor(scrap.scrapValue * currentGamblingOutcomeMultiplier);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void ActivateGamblingMachineServerRPC(NetworkBehaviourReference scrapBeingGambledRef, NetworkBehaviourReference playerWhoGambledRef, ServerRpcParams serverRpcParams = default)
+        {
+            if (!IsServer) return;
+
+            // Machine cannot be used anymore
+            if (numberOfUses <= 0)
+            {
+                Plugin.mls.LogWarning("ActivateGamblingMachineServerRPC: Machine usage limit has been reached");
+                return;
+            };
+
+            // Potentially block multiple requests from processing
+            if (lockGamblingMachineServer)
+            {
+                Plugin.mls.LogWarning($"Gambling machine is already processing one client's request. Throwing away a request for... {serverRpcParams.Receive.SenderClientId}");
+                return;
+            };
+
+            lockGamblingMachineServer = true; // Lock any further request
+            numberOfUses -= 1;
+            Plugin.mls.LogInfo($"ActivateGamblingMachineServerRPC: Number of uses left: {numberOfUses}");
+
+            if (!scrapBeingGambledRef.TryGet(out GrabbableObject scrapBeingGambled))
+            {
+                Plugin.mls.LogError("ActivateGamblingMachineServerRPC: Failed to get scrap value on client side.");
+                return;
+            }
+
+            // Tell all clients to activate their gambling machine cooldown
+            BeginGamblingMachineCooldownClientRpc();
+
+            Plugin.mls.LogMessage("ActivateGamblingMachineServerRPC: Starting gambling machine cooldown phase in the server invoked by: " + serverRpcParams.Receive.SenderClientId);
+
+            // Server side logic and send down the final scrap value
+            SetRoll(RollDice());
+            GenerateGamblingOutcomeFromCurrentRoll();
+            int updatedScrapValue = GetScrapValueBasedOnGambledOutcome(scrapBeingGambled);
+
+            // TODO: This function doesn't need to be this big
+            ActivateGamblingMachineClientRPC(scrapBeingGambledRef, playerWhoGambledRef, serverRpcParams.Receive.SenderClientId, updatedScrapValue, currentGamblingOutcome, numberOfUses);
+        }
+
+        [ClientRpc]
+        void ActivateGamblingMachineClientRPC(NetworkBehaviourReference scrapBeingGambledRef, NetworkBehaviourReference playerWhoGambledRef, ulong invokerId, int updatedScrapValue, string outcome, int numberOfUsesServer)
+        {
+            Plugin.mls.LogInfo("ActivateGamblingMachineClientRPC: Activiating gambling machines on client...");
+
+            // Sync client with server state
+            numberOfUses = numberOfUsesServer;
+            Plugin.mls.LogInfo($"ActivateGamblingMachineClientRPC: Number of uses left: {numberOfUses}");
+
+            if (!playerWhoGambledRef.TryGet(out PlayerControllerCustom playerWhoGambled))
+            {
+                Plugin.mls.LogError("ActivateGamblingMachineClientRPC: Failed to get player who gambled.");
+                return;
+            }
+
+            playerWhoGambled.LockGamblingMachine();
+            PlayDrumRoll();
+
+            // Start cooldown for all clients
+            BeginGamblingMachineCooldown(() =>
+            {
+                if (!scrapBeingGambledRef.TryGet(out GrabbableObject scrapBeingGambled))
+                {
+                    Plugin.mls.LogError("ActivateGamblingMachineClientRPC: Failed to get scrap value on client side.");
+                    return;
+                }
+
+                // Update scrap value for all client
+                Plugin.mls.LogInfo($"Setting scrap value to: {updatedScrapValue}");
+                scrapBeingGambled.SetScrapValue(updatedScrapValue);
+                PlayGambleResultAudio(outcome);
+                playerWhoGambled.ReleaseGamblingMachineLock();
+
+
+                // Server is also a client. We will release the lock on the machine here
+                if (IsServer)
+                {
+                    Plugin.mls.LogMessage("Unlocking gambling machine");
+                    lockGamblingMachineServer = false;
+                }
+
+            });
+        }
+
+        // Set cooldown for all clients, not counting down yet until the server says so
+        [ClientRpc]
+        void BeginGamblingMachineCooldownClientRpc()
+        {
+            Plugin.mls.LogInfo("Setting machine cooldown to max");
+            SetCurrentGamblingCooldownToMaxCooldown();
         }
 
         private void InitAudioSource()

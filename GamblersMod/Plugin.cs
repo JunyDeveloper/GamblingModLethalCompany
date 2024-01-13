@@ -84,10 +84,13 @@ namespace GamblersMod
             // Attach the gambling machine script to the gambling machine game object
             GamblingMachine.AddComponent<GamblingMachine>();
 
+            new GameObject().AddComponent<GamblingMachineManager>();
+
             harmony.PatchAll(typeof(Plugin));
             harmony.PatchAll(typeof(GameNetworkManagerPatch));
             harmony.PatchAll(typeof(PlayerControllerBPatch));
             harmony.PatchAll(typeof(RoundManagerPatch));
+            harmony.PatchAll(typeof(StartOfRoundPatch));
         }
 
         private T LoadAssetFromAssetBundleAndLogInfo<T>(AssetBundle bundle, string assetName) where T : UnityEngine.Object

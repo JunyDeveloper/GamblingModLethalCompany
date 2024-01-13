@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace GamblersMod.RoundManagerCustomSpace
@@ -8,29 +9,38 @@ namespace GamblersMod.RoundManagerCustomSpace
         public RoundManager RoundManager;
         public GameObject GamblingMachine;
 
+        private List<Vector3> spawnPoints;
+
         void Awake()
         {
             RoundManager = GetComponent<RoundManager>();
+            spawnPoints = new List<Vector3>();
+            spawnPoints.Add(new Vector3(-27.808f, -2.6256f, -9.7409f));
+            spawnPoints.Add(new Vector3(-27.808f, -2.6256f, -4.7409f));
+            spawnPoints.Add(new Vector3(-27.808f, -2.6256f, 0.7409f));
+            spawnPoints.Add(new Vector3(-27.808f, -2.6256f, 6.7409f));
         }
 
         [ServerRpc]
         public void DespawnGamblingMachineServerRpc()
         {
-            GamblingMachine.GetComponent<NetworkObject>().Despawn();
+            GamblingMachineManager.Instance.DespawnAll();
         }
 
         [ServerRpc]
         public void SpawnGamblingMachineServerRpc()
         {
             Plugin.mls.LogInfo($"Attempting to spawn gambling machine at {RoundManager.currentLevel.name}");
-            Vector3 gamblingMachineSpawnPoint = new Vector3(-27.808f, -2.6256f, -9.7409f);
 
-            GamblingMachine = UnityEngine.Object.Instantiate(Plugin.GamblingMachine, gamblingMachineSpawnPoint, Quaternion.Euler(0, 90, 0));
-            GamblingMachine.tag = "Untagged";
-            GamblingMachine.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            GamblingMachine.layer = LayerMask.NameToLayer("InteractableObject");
-
-            GamblingMachine.GetComponent<NetworkObject>().Spawn();
+            for (int i = 0; i < Plugin.CurrentUserConfig.configNumberOfMachines; i++)
+            {
+                // Machine spawn per vector points
+                if (i >= spawnPoints.Count) return;
+                Plugin.mls.LogInfo($"AA: {spawnPoints}");
+                Plugin.mls.LogInfo($"AAWW: {spawnPoints[i]}");
+                GamblingMachineManager.Instance.Spawn(spawnPoints[i], Quaternion.Euler(0, 90, 0));
+                Plugin.mls.LogInfo($"Spawned machine number: {i}");
+            }
         }
     }
 }

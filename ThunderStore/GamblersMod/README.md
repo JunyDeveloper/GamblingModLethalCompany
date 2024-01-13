@@ -24,19 +24,24 @@ The default gambling chances (these are configurable):
 
 ## How to use the gambling machine
 
-While holding a scrap, walk up to the machine and press "E" (your interaction key).
-![Gambling machine](https://i.ibb.co/z2vbdyR/machine.png)
+While holding a scrap, walk up to the machine and press "E" (or your interaction key).
+![Gambling machine](https://i.ibb.co/BV9BWRc/Gamba-machine.png)
 
 ## Features
 
 - Gambling
-- Configurable fields for gambling chances and multipliers
+- Configurable gambling chances
+- Configurable gambling scrap multipliers
+- Configurable additions of gambling machines
+- Configurable number of uses for gambling machine
 - Client's configuration automatically syncs with the host
 
 ## Configurable Fields
 
 - General Settings
   - Cooldown Time (reducing this will cause the drumroll sound to not sync & may also cause latency issues)
+  - Number of uses per machine 
+  - Number of machines
 - Gambling Chance fields (make sure these fields add up to 100; if not it'll still work, but math will be inaccurate)
   - Jackpot Chance
   - Triple Chance
