@@ -22,14 +22,14 @@ namespace GamblersMod.Patches
         {
             Plugin.mls.LogInfo("FinishGeneratingNewLevelServerRpcPatch was called");
             // Remove it every level so it can be re-created when landing on "The Company" again. Also don't want this spawning on other moons so remove it there too
-            if (__instance.currentLevel.levelID != 3 && RoundManagerCustom.GamblingMachine)
+            if (__instance.currentLevel.levelID != 3)
             {
                 Plugin.mls.LogInfo("Despawning gambling machine...");
                 RoundManagerCustom.DespawnGamblingMachineServerRpc();
             };
 
             // Only spawn this at "The Company" moon
-            if (__instance.currentLevel.levelID == 3 && !RoundManagerCustom.GamblingMachine)
+            if (__instance.currentLevel.levelID == 3)
             {
                 Plugin.mls.LogInfo("Spawning gambling machine...");
                 RoundManagerCustom.SpawnGamblingMachineServerRpc();

@@ -7,7 +7,6 @@ namespace GamblersMod.RoundManagerCustomSpace
     internal class RoundManagerCustom : NetworkBehaviour
     {
         public RoundManager RoundManager;
-        public GameObject GamblingMachine;
 
         private List<Vector3> spawnPoints;
 
@@ -36,8 +35,6 @@ namespace GamblersMod.RoundManagerCustomSpace
             {
                 // Machine spawn per vector points
                 if (i >= spawnPoints.Count) return;
-                Plugin.mls.LogInfo($"AA: {spawnPoints}");
-                Plugin.mls.LogInfo($"AAWW: {spawnPoints[i]}");
                 GamblingMachineManager.Instance.Spawn(spawnPoints[i], Quaternion.Euler(0, 90, 0));
                 Plugin.mls.LogInfo($"Spawned machine number: {i}");
             }
