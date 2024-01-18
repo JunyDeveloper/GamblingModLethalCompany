@@ -20,6 +20,7 @@ namespace GamblersMod.Patches
         {
             Plugin.mls.LogInfo("Player disconnected. Resetting the user's configuration settings.");
             Plugin.CurrentUserConfig = Plugin.UserConfigSnapshot; // Reset the user's configuration settings
+            GamblingMachineManager.Instance.Reset();
         }
     }
 }
