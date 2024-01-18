@@ -45,6 +45,12 @@ namespace GamblersMod
             {
                 GamblingMachine.GetComponent<NetworkObject>().Despawn();
             }
+            Reset();
+        }
+
+        public void Reset()
+        {
+            Plugin.mls.LogInfo("Resetting gambling machine manager state...");
             GamblingMachines.Clear();
         }
     }
